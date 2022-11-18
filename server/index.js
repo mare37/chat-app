@@ -33,9 +33,20 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", (data) => {
     console.log(data.messageToBeSent);
-    console.log(data.author);
-    socket.emit("received_message", data.messageToBeSent);
-    socket.to(data.room).emit("received_message", data.messageToBeSent);
+    console.log(data.authorFirstName);
+    console.log(data.authorSecondName);
+    socket.emit("received_message", [
+      data.authorFirstName,
+      data.authorSecondName,
+      data.messageToBeSent,
+    ]);
+    socket
+      .to(data.room)
+      .emit("received_message", [
+        data.authorFirstName,
+        data.authorSecondName,
+        data.messageToBeSent,
+      ]);
   });
 
   socket.on("disconnect", () => {

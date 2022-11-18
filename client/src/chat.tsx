@@ -12,8 +12,8 @@ function Chat(props: any) {
 
   const [room, setRoom] = useState(0);
   const [roomMessage, setRoomMessage] = useState("");
- // const [firstName, setFirstName] = useState("");
- // const [secondName, setSecondName] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [secondName, setSecondName] = useState("");
 
   socket.on("connect", () => {
     console.log("Server connected");
@@ -21,9 +21,6 @@ function Chat(props: any) {
   socket.on("disconnect", () => {
     console.log("Server disconnected");
   });
-
-
-  
 
   //join room
   const joinRoom = async () => {
@@ -34,11 +31,12 @@ function Chat(props: any) {
     });
   };
 
-  useEffect(()=>{
-    joinRoom();
-  },[])
+  console.log("Chat rendered");
+  
 
- 
+  useEffect(() => {
+    joinRoom();
+  }, []);
 
   //send message
   const sendMessage = async () => {
@@ -46,8 +44,8 @@ function Chat(props: any) {
       await socket.emit("send_message", {
         room: props.room,
         messageToBeSent: messageToBeSent,
-        author: `${props.firstName} ${props.secondName}`
-      
+        authorFirstName: props.firstName,
+        authorSecondName: props.secondName,
       });
     } else {
       console.log("You havent typed anything");
@@ -59,17 +57,30 @@ function Chat(props: any) {
       console.log(data);
 
       setMessage((prev) => {
-        //  if(message.length === 0){
-        // return [data]
-        //   }
         return [...prev, data];
       });
     });
   }, [socket]);
 
-  const allMessages: any = message.slice(0).reverse().map((item, index) => {
-    return <p key={index}>{item}</p>;
-  });
+  const allMessages: any = message
+    .slice(0)
+    .reverse()
+    .map((item, index) => {
+      return (
+        <div
+        key={index}
+          className={
+            props.firstName === item[0] && props.secondName === item[1]
+              ? "text-message active"
+              : "text-message"
+          }
+        >
+          <p className={props.firstName === item[0] && props.secondName === item[1]
+              ? "text-paragraph"
+              : "text-paragraph active" }   key={index}>{item[2]}</p>
+        </div>
+      );
+    });
 
   useEffect(() => {
     socket.on("room_joined_sucessfully", (data) => {
@@ -80,18 +91,16 @@ function Chat(props: any) {
   return (
     <div className="Chat">
       <div className="chat-area">{allMessages}</div>
-      <div  className="input-section"     >
-      <input
-        type="text"
-        placeholder="type here"
-        onChange={(e) => {
-          setmessageToBeSent(e.target.value);
-        }}
-      />
-      <button onClick={sendMessage}>Send</button>
-
+      <div className="input-section">
+        <input
+           type="text"
+          placeholder="type here"
+          onChange={(e) => {
+            setmessageToBeSent(e.target.value);
+          }}
+        />
+        <button onClick={sendMessage}>Send</button>
       </div>
-     
     </div>
   );
 }
