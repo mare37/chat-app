@@ -6,14 +6,11 @@ const socket = io("http://localhost:5000", {
   transports: ["websocket"],
 });
 
-function Chat(props: any) {
+function Chat(props : any) {
   const [message, setMessage] = useState([""]);
   const [messageToBeSent, setmessageToBeSent] = useState("");
-
-  const [room, setRoom] = useState(0);
   const [roomMessage, setRoomMessage] = useState("");
-  // const [firstName, setFirstName] = useState("");
-  // const [secondName, setSecondName] = useState("");
+  
 
   socket.on("connect", () => {
     console.log("Server connected");
@@ -22,7 +19,7 @@ function Chat(props: any) {
     console.log("Server disconnected");
   });
 
-  //join room
+
   const joinRoom = async () => {
     await socket.emit("join_room", {
       room: props.room,
@@ -37,6 +34,9 @@ function Chat(props: any) {
   useEffect(() => {
     joinRoom();
   }, []);
+
+  //join room
+  
 
   //send message
   const sendMessage = async () => {
