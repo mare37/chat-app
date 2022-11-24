@@ -4,13 +4,16 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { response } = require("express");
-const db = require("./config/database")
+
+const db = require("./src/config/database")
 
 
-
-app.use(cors());
-app.use(express.json())
+app.use(express.json());
+app.use(cors({ origin: true, credentials: true }));
 const port = 5000;
+
+//importing routes
+const usersRoute = require("./src/routes/users")
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -19,6 +22,9 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"],
   },
 });
+
+
+app.use(usersRoute)
 
 app.get("/", (req, res) => {
   //db
@@ -30,10 +36,8 @@ app.get("/", (req, res) => {
   res.send("HOME");
 });
 
-
-
 io.on("connection", (socket) => {
- // console.log(`User connected ${socket.id}`);
+  // console.log(`User connected ${socket.id}`);
 
   socket.on("join_room", (data, err) => {
     if (err) {
@@ -70,7 +74,9 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(port, () => {
-  console.log(`Socket io listening on port ${port}...`);
-});
+
+
+  httpServer.listen(port, () => {
+    console.log(`Server listening on port ${port}...`);
+  });
 
