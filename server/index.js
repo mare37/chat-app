@@ -31,11 +31,7 @@ app.use(usersRoute)
 
 app.get("/", validate, (req, res) => {
   
-  //db
-  // .query
-  // "ALTER TABLE posts AUTO_INCREMENT = 1"
-  //"INSERT INTO posts (title, blogposts, author) VALUES ('onee', 'two', 'three'  ) "
-  //  ();
+ 
 
   res.send("HOME");
 });
