@@ -1,15 +1,18 @@
 const express = require("express");
 const app = express();
+var cookieParser = require('cookie-parser')
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { response } = require("express");
+const validate =  require("./src/middleware/auth");
 
 const db = require("./src/config/database")
 
 
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
+app.use(cookieParser())
 const port = 5000;
 
 //importing routes
@@ -26,7 +29,8 @@ const io = new Server(httpServer, {
 
 app.use(usersRoute)
 
-app.get("/", (req, res) => {
+app.get("/", validate, (req, res) => {
+  
   //db
   // .query
   // "ALTER TABLE posts AUTO_INCREMENT = 1"

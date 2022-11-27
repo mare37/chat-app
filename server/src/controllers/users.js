@@ -35,7 +35,7 @@ const logIn = (req, res) => {
 
   const query = "SELECT * FROM users WHERE email = ?";
 
-  db.query(query, [email], async (err, result) => {
+  db.query(query, [email], async (err, result) => { 
     if (err) {
       console.log(err);
       res.send("failed");
@@ -57,7 +57,7 @@ const logIn = (req, res) => {
       let options = {
         maxAge: 1000 * 60 * 15, // would expire after 15 minutes
         httpOnly: true, // The cookie only accessible by the web server
-        signed: true // Indicates if the cookie should be signed
+       // Indicates if the cookie should be signed
     }
 
     // Set cookie
@@ -70,4 +70,12 @@ const logIn = (req, res) => {
   });
 };
 
-module.exports = { registerUser, logIn };
+
+const logOut = (req,res)=>{
+
+  res.cookie('access_token', "", {maxAge:1,  httpOnly: true,secure:true  })
+  res.send("Logged out")
+
+}
+
+module.exports = { registerUser, logIn, logOut };
