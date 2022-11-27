@@ -5,7 +5,7 @@ var jwt = require("jsonwebtoken");
 const validate= (req,res,next)=>{
     
     const token = req.cookies['access_token']
-    console.log(token);
+    //console.log(token);
 
     jwt.verify(token, '1234', function(err, decoded) {
         if(err){
@@ -13,7 +13,7 @@ const validate= (req,res,next)=>{
         }
         if(decoded === undefined){
             //console.log(("You are not log in"));
-            res.send("You are not log in")
+            res.send({login:false,message:"You are not logged in"});
         }else{
             next()
         }

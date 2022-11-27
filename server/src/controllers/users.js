@@ -9,23 +9,62 @@ const db = require("../config/database");
 const registerUser = (req, res) => {
   const { user_name, email, password } = req.body;
 
-  const query = "INSERT INTO users (email,user_name, password) VALUES (?,?,?)";
-
-  bcrypt.hash(password, salt, function (err, hash) {
-    if (err) {
+  const query1 = "SELECT * FROM users WHERE user_name = ?";
+  const query2 = "SELECT * FROM users WHERE email = ?";
+   
+  //Find out if username exists
+  db.query(query1,[user_name], (err,result)=>{
+    if(err){
       console.log(err);
-      res.send("Failed");
-      return;
+      res.send("Failed")
+      return
     }
-    db.query(query, [email, user_name, hash], (err, result) => {
-      if (err) {
+    
+    if(result.length != 0){
+      res.send("Username exists")
+      return  //if it exists stop the registration
+      
+    }
+     
+    //Find out if email exists
+    db.query(query2,[email],(err,result)=>{
+      if(err){
         console.log(err);
-        res.send("FAILED");
-        return;
+        res.send("Failed")
+        return
       }
-      res.send("SUCCESSFUL").status(200);
-    });
-  });
+      if(result.length != 0){
+        res.send("Email exists")
+        return  //if it exists stop the registration
+      }
+
+      //if both dont exist proceed with registration in the code below
+
+      const query = "INSERT INTO users (email,user_name, password) VALUES (?,?,?)";
+
+      bcrypt.hash(password, salt, function (err, hash) {
+        if (err) {
+          console.log(err);
+          res.send("Failed");
+          return;
+        }
+        db.query(query, [email, user_name, hash], (err, result) => {
+          if (err) {
+            console.log(err);
+            res.send("FAILED");
+            return;
+          }
+          res.send("SUCCESSFUL").status(200);
+        });
+      });
+
+
+    })
+
+  }  )
+  
+
+  
 };
 
 //user login
@@ -52,7 +91,7 @@ const logIn = (req, res) => {
 
     if (match) {
       const token = jwt.sign(result[0], "1234", { expiresIn: 60 * 60 });
-      console.log(token);
+     // console.log(token);
 
       let options = {
         maxAge: 1000 * 60 * 15, // would expire after 15 minutes
@@ -62,10 +101,11 @@ const logIn = (req, res) => {
 
     // Set cookie
     res.cookie('access_token', token, options)
+    const user_name = result[0].user_name;
 
-      res.send("You Logged in");
+      res.send({auth:true,user_name:user_name,  message:"You are logged in"});
     } else {
-      res.send("Wrong password");
+      res.send({auth:false,message:"You are logged in"});
     }
   });
 };
@@ -78,4 +118,13 @@ const logOut = (req,res)=>{
 
 }
 
-module.exports = { registerUser, logIn, logOut };
+
+const logInStatus = (req,res)=>{
+
+  console.log("You are logged in");
+
+  res.send({login:true,message:"You are logged in"})
+
+}
+
+module.exports = { registerUser, logIn, logOut, logInStatus   };
