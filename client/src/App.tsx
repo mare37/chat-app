@@ -11,16 +11,13 @@ function App() {
   return <div>
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>}  />
+       
         <Route path="/login" element={<LogIn/>}  />
          
          <Route element={<ProtectedRoutes/>}   >
          <Route path="/user/:username" element={<UserAccount/>}  />
          </Route>
-
-         <Route element={<ProtectedRoutes/>}   >
-         <Route path="/" element={<UserAccount/>}  />
-         </Route>
+         <Route path="/" element={<Home/>}  />
 
        
       </Routes>

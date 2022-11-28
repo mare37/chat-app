@@ -1,12 +1,19 @@
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {useSelector, useDispatch } from "react-redux"
+import {RootState}  from "../../store"
+import {setUsername} from "../../usernameSlice"
+
+
 
 
 axios.defaults.withCredentials = true;
 
 function LogIn() {
 
+  const username = useSelector((state: RootState) => state.value)
+  const dispatch = useDispatch()
 
   
 
@@ -18,7 +25,7 @@ function LogIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(username);
 
   const navigate = useNavigate();
 
@@ -31,12 +38,12 @@ function LogIn() {
           console.log(response.data.login);
           console.log(response.data);
           
-          if (response.data.login) {
+          if (response.data.login) {  
             console.log("you are in");
           
             
             
-           navigate(`/user/wilson`)
+           navigate(`/user/${userName}`)
           }
     }).catch((err)=>{
         console.log(err);
@@ -65,6 +72,7 @@ function LogIn() {
 
       if (response.data.auth) {
         console.log("you are in");
+        dispatch(setUsername(response.data.user_name));
       
 
        navigate(`/user/${response.data.user_name}`)
