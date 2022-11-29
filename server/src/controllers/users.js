@@ -101,11 +101,12 @@ const logIn = (req, res) => {
 
     // Set cookie
     res.cookie('access_token', token, options)
+    console.log(result[0]);
     const user_name = result[0].user_name;
-
-      res.send({auth:true,user_name:user_name,  message:"You are logged in"});
+    const  user_id = result[0].user_id;
+      res.send({auth:true,user_name:user_name,  user_id: user_id, message:"You are logged in"});
     } else {
-      res.send({auth:false,message:"You are logged in"});
+      res.send({auth:false,message:"You are not logged in"});
     }
   });
 };

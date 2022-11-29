@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {useSelector, useDispatch } from "react-redux"
 import {RootState}  from "../../store"
-import {setUsername} from "../../usernameSlice"
+import {setUser} from "../../usernameSlice"
 
 
 
@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true;
 
 function LogIn() {
 
-  const username = useSelector((state: RootState) => state.value)
+  const user = useSelector((state: RootState) => state.object.username)
   const dispatch = useDispatch()
 
   
@@ -25,7 +25,7 @@ function LogIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState(username);
+  const [userName, setUserName] = useState(user);
 
   const navigate = useNavigate();
 
@@ -41,6 +41,7 @@ function LogIn() {
           if (response.data.login) {  
             console.log("you are in");
           
+            console.log(user);
             
             
            navigate(`/user/${userName}`)
@@ -72,8 +73,11 @@ function LogIn() {
 
       if (response.data.auth) {
         console.log("you are in");
-        dispatch(setUsername(response.data.user_name));
-      
+        const user ={username:response.data.user_name, userid:response.data.user_id}
+        dispatch(setUser(user));
+        console.log(response.data);
+        
+       
 
        navigate(`/user/${response.data.user_name}`)
       } else {

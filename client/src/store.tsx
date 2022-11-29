@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 
-import usernameReducer from "./usernameSlice"
+import userReducer from "./usernameSlice"
 
 
 
@@ -13,7 +13,7 @@ const persistConfig = {
   storage,
 }
 
-const persistedReducer = persistReducer(persistConfig, usernameReducer)
+const persistedReducer = persistReducer(persistConfig, userReducer)
 
 
 

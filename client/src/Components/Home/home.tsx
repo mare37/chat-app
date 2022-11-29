@@ -9,7 +9,7 @@ function Home() {
   const navigate = useNavigate()
 
  
-  const username = useSelector((state: RootState) => state.value)
+  const username = useSelector((state: RootState) => state.object.username)
   const [userName, setUserName] = useState(username);
   
   
@@ -29,7 +29,7 @@ function Home() {
           if (response.data.login) {  
             console.log("you are in");
 
-           navigate(`/user/${userName}`)
+          navigate(`/user/${userName}`)
           }else{
             navigate(`/login`);
           }

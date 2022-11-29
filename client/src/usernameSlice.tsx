@@ -2,20 +2,22 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 
 
-const userNameSlice = createSlice({
-    name: "username",
-    initialState:{value:""},
+const userSlice = createSlice({
+    name: "user",
+    initialState:{object:{username:"", userid:null} },
     reducers:{
-      setUsername:(state ,action)=>{
-        state.value = action.payload
+      setUser:(state ,action)=>{ 
+       // const user = action.payload
+        state.object = action.payload
+         
       }
     }
   })
 
-  export const {setUsername} = userNameSlice.actions
+  export const {setUser} = userSlice.actions
 
   
 
-  export default userNameSlice.reducer
+  export default userSlice.reducer
 
   
