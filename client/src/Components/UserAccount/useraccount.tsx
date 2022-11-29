@@ -1,22 +1,33 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import usernameReducer from "../../usernameSlice"
-import { configureStore } from '@reduxjs/toolkit'
-function UserAccount (){
 
-    const store = configureStore({
-        reducer:{
-          userName:usernameReducer
-        }
-    
-      })
-    console.log(store.getState());
-    
+function UserAccount() {
+  const { username } = useParams();
 
-    const {username} = useParams();
+  const [createGroup, setCreateGroup] = useState(false);
 
-    return(
-        <div>{`WELCOME ${username}`}</div>
-    )
+  return (
+    <div>
+      <div>{`WELCOME ${username}`}</div>
+
+      <button
+        onClick={() => {
+          setCreateGroup(true);
+        }}
+      >
+        Create Chatroom
+      </button>
+
+      {createGroup === true ? (
+        <form>
+          <input />
+          <button>Create</button>
+        </form>
+      ) : (
+        ""
+      )}
+    </div>
+  );
 }
 
 export default UserAccount;

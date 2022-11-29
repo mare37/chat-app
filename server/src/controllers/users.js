@@ -94,7 +94,7 @@ const logIn = (req, res) => {
      // console.log(token);
 
       let options = {
-        maxAge: 1000 * 60 * 15, // would expire after 15 minutes
+        maxAge: 1000 * 60 * 15 * 10, // would expire after 15 minutes
         httpOnly: true, // The cookie only accessible by the web server
        // Indicates if the cookie should be signed
     }

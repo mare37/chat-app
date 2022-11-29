@@ -5,6 +5,7 @@ import Chat from "./chat";
 import Home from "./Components/Home/home";
 import LogIn from "./Components/Login/login";
 import UserAccount from "./Components/UserAccount/useraccount";
+import Admin from "./Components/Admin/admin";
 import ProtectedRoutes from "./protectedroutes";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
          <Route path="/user/:username" element={<UserAccount/>}  />
          </Route>
          <Route path="/" element={<Home/>}  />
+         <Route path="/admin" element={<Admin/>}  />
 
        
       </Routes>

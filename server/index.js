@@ -17,6 +17,7 @@ const port = 5000;
 
 //importing routes
 const usersRoute = require("./src/routes/users")
+const categoriesRoute = require("./src/routes/topic_categories")
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -28,6 +29,8 @@ const io = new Server(httpServer, {
 
 
 app.use(usersRoute)
+app.use("/api/topic_categories",categoriesRoute)
+
 
 app.get("/", validate, (req, res) => {
   
