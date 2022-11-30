@@ -1,0 +1,25 @@
+.useraccount-body{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+ 
+
+   
+}
+
+
+.mygroups-section{
+    width:20%
+
+}
+
+
+
+.chat-section{
+    width:50%
+}
+
+.myfriends-section{
+    width:20%
+}

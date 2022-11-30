@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
+import Chat from "../Chat/chat";
+import "./useraccount.css"
 
 axios.defaults.withCredentials = true;
 
@@ -19,6 +21,7 @@ function UserAccount() {
   const userId = useSelector((state: RootState) => state.object.userid);
   const [createGroup, setCreateGroup] = useState(false);
   const [myChatRooms, setMyChatRooms] = useState<Array<Item>>([]);
+ // const []
   //const [ myChatRoomsData, setmyChatRoomsData] = useState([]);
 
   console.log(userId);
@@ -37,18 +40,23 @@ function UserAccount() {
       .then();
   }, []);
 
-  let myChatRoomsData  = myChatRooms.map((chatRoom, index) => {
+  let myChatRoomsData = myChatRooms.map((chatRoom, index) => {
     console.log(chatRoom.chatroom_name);
 
-    return <h1  onClick={()=>{console.log(chatRoom.chatroom_id);
-    }}         key={index}>{chatRoom.chatroom_name}</h1>;
+    return (
+      <h3
+        onClick={() => {
+          console.log(chatRoom.chatroom_id);
+        }}
+        key={index}
+      >
+        {chatRoom.chatroom_name}
+      </h3>
+    );
   });
-
-
 
   useEffect(() => {
     console.log("ran");
-  
   }, [myChatRooms]);
 
   console.log("page rendering");
@@ -74,7 +82,17 @@ function UserAccount() {
         ""
       )}
 
-      {myChatRoomsData}
+      <div className="useraccount-body">
+        <section className="mygroups-section">
+          <h1>My chat rooms</h1>
+
+          {myChatRoomsData}
+        </section>
+        <section className="chat-section">
+          <Chat />
+        </section>
+        <section className="myfriends-section"></section>
+      </div>
     </div>
   );
 }
