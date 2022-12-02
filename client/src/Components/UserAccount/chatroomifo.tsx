@@ -6,7 +6,7 @@ function ChatRoomInfo(props:any){
     return(
         <div>
             <div>{props.oneChatRoom}</div>
-            <div>No. of Members</div>
+            <div>{`Number of Members: ${props.numberOfMembers}`}</div>
             <div>Admins</div>
 
 

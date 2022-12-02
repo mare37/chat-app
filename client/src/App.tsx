@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Chat from "./Components/Chat/chat";
 import Home from "./Components/Home/home";
-import LogIn from "./Components/Login/login";
+import LogIn from "./Components/Login/Login";
+
 import UserAccount from "./Components/UserAccount/useraccount";
 import Admin from "./Components/Admin/admin";
 import ProtectedRoutes from "./protectedroutes";
@@ -13,8 +14,8 @@ function App() {
     <Router>
       <Routes>
        
-        <Route path="/login" element={<LogIn/>}  />
-         
+        
+      <Route path="/login" element={<LogIn/>}  />
          <Route element={<ProtectedRoutes/>}   >
          <Route path="/user/:username" element={<UserAccount/>}  />
          </Route>

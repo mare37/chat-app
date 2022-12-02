@@ -1,27 +1,16 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {useSelector, useDispatch } from "react-redux"
-import {RootState}  from "../../store"
-import {setUser} from "../../usernameSlice"
-
-
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store";
+import { setUser } from "../../usernameSlice";
+import useDetails from "../../Hooks/useUserService";
 
 axios.defaults.withCredentials = true;
 
 function LogIn() {
-
-  const user = useSelector((state: RootState) => state.object.username)
-  const dispatch = useDispatch()
-
-  
-
-
-  
-  
-
-
+  const user = useSelector((state: RootState) => state.object.username);
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,38 +18,31 @@ function LogIn() {
 
   const navigate = useNavigate();
 
+  const { submitLoginDetails } = useDetails(email, password);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("effect login");
-    
 
-    axios.get("http://localhost:5000/api/logInStatus").then((response)=>{
-          console.log(response.data.login);
-          console.log(response.data);
-          
-          if (response.data.login) {  
-            console.log("you are in");
-          
-            console.log(user);
-            
-            
-           navigate(`/user/${userName}`)
-          }
-    }).catch((err)=>{
+    axios
+      .get("http://localhost:5000/api/logInStatus")
+      .then((response) => {
+        console.log(response.data.login);
+        console.log(response.data);
+
+        if (response.data.login) {
+          console.log("you are in");
+
+          console.log(user);
+
+          navigate(`/user/${userName}`);
+        }
+      })
+      .catch((err) => {
         console.log(err);
-        
-    })
+      });
+  }, []);
 
-},[])
-
-
-
-
-
-
-
-
-  const submitLoginDetails = async (event: React.SyntheticEvent) => {
+  /*const submitLoginDetails = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
     try {
@@ -88,7 +70,7 @@ function LogIn() {
     }
 
     //console.log(response.data);
-  };
+  };*/
 
   return (
     <div
@@ -107,7 +89,6 @@ function LogIn() {
           placeholder="Enter Email"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setEmail(event.target.value);
-            
           }}
         />
 
@@ -116,7 +97,6 @@ function LogIn() {
           placeholder="Password"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setPassword(event.target.value);
-          
           }}
         />
 

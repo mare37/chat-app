@@ -1,5 +1,5 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
-import type { RootState } from './store'
+
 
 
 const userSlice = createSlice({

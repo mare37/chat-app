@@ -18,7 +18,7 @@ function UserAccount() {
     fk_topic_categories_topic_category_id: 0;
     fk_admin_users_user_id: 0;
   }
-
+  //chatroom_membersNo: "",
   const userId = useSelector((state: RootState) => state.object.userid);
   const [createGroup, setCreateGroup] = useState(false);
   const [myChatRooms, setMyChatRooms] = useState<Array<Item>>([]);
@@ -27,6 +27,7 @@ function UserAccount() {
   const [requestToJoin, setRequestToJoin] = useState(false);
   const [oneChatRoom, setoneChatRoom] = useState({
     chatroom_name: "",
+    chatroom_membersNo: 0
   });
 
   //Getting all my chat rooms in which this user account is the admin
@@ -40,7 +41,7 @@ function UserAccount() {
       });
   }, []);
 
-  console.log(myChatRooms);
+ // console.log(myChatRooms);
 
   //Get all chat rooms
   useEffect(() => {
@@ -73,9 +74,18 @@ function UserAccount() {
       }
     });
 
+  //  let arrayLength = 0;
+
     axios
     .get(`http://localhost:5000/api/chatroom_users/${id}`).then((response)=>{
-      console.log(response);
+      console.log (response.data.data.length);
+      
+     const arrayLength = response.data.data.length;
+
+     setoneChatRoom({
+      chatroom_name: oneChatRoom[0].chatroom_name,
+      chatroom_membersNo: arrayLength,
+    });
       
     })
 
@@ -83,9 +93,7 @@ function UserAccount() {
 
 
 
-    setoneChatRoom({
-      chatroom_name: oneChatRoom[0].chatroom_name,
-    });
+    
     console.log(oneChatRoom);
   };
 
@@ -155,7 +163,7 @@ function UserAccount() {
           <Chat />
         </section>
         <section className="chatroom-info">
-          <ChatRoomInfo oneChatRoom={oneChatRoom.chatroom_name} />
+          <ChatRoomInfo oneChatRoom={oneChatRoom.chatroom_name} numberOfMembers={oneChatRoom.chatroom_membersNo} />
         </section>
       </div>
     </div>
