@@ -4,7 +4,8 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import Chat from "../Chat/chat";
-import "./useraccount.css"
+import "./useraccount.css";
+import ChatRoomInfo from "./chatroomifo";
 
 axios.defaults.withCredentials = true;
 
@@ -21,32 +22,79 @@ function UserAccount() {
   const userId = useSelector((state: RootState) => state.object.userid);
   const [createGroup, setCreateGroup] = useState(false);
   const [myChatRooms, setMyChatRooms] = useState<Array<Item>>([]);
- // const []
-  //const [ myChatRoomsData, setmyChatRoomsData] = useState([]);
+  const [query, setQuery] = useState("");
+  const [searchItems, setSearchItems] = useState([]);
+  const [requestToJoin, setRequestToJoin] = useState(false);
+  const [oneChatRoom, setoneChatRoom] = useState({
+    chatroom_name: "",
+  });
 
-  console.log(userId);
-
+  //Getting all my chat rooms in which this user account is the admin
   useEffect(() => {
-    //Getting all my chat rooms in which this user account is the admin
     axios
       .get("http://localhost:5000/api/chat_rooms", {
         params: { userId: userId },
       })
       .then((response) => {
-        //console.log(response);
         setMyChatRooms(response.data);
-        console.log(myChatRooms);
-      })
-      .then();
+      });
   }, []);
 
-  let myChatRoomsData = myChatRooms.map((chatRoom, index) => {
-    console.log(chatRoom.chatroom_name);
+  console.log(myChatRooms);
 
+  //Get all chat rooms
+  useEffect(() => {
+    console.log("USE EFFECT 2 RAN");
+
+    if (query.length >= 1) {
+      axios.get("http://localhost:5000/api/chat_rooms").then((response) => {
+        let data = response.data.filter((item: any) => {
+          return item.chatroom_name.toLowerCase().includes(query);
+        });
+
+        let data2 = data.map((item: any, key: number) => {
+          return <p key={key}>{item.chatroom_name}</p>;
+        });
+
+        setSearchItems(data2);
+      });
+    } else {
+      // let data3 = "";
+      setSearchItems([]);
+    }
+  }, [query]);
+
+  const getChatRoomInfo = (id: number) => {
+    const oneChatRoom = myChatRooms.filter((item) => {
+      if (item.chatroom_id === id) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    axios
+    .get(`http://localhost:5000/api/chatroom_users/${id}`).then((response)=>{
+      console.log(response);
+      
+    })
+
+     
+
+
+
+    setoneChatRoom({
+      chatroom_name: oneChatRoom[0].chatroom_name,
+    });
+    console.log(oneChatRoom);
+  };
+
+  let myChatRoomsData = myChatRooms.map((chatRoom, index) => {
     return (
       <h3
         onClick={() => {
           console.log(chatRoom.chatroom_id);
+          getChatRoomInfo(chatRoom.chatroom_id);
         }}
         key={index}
       >
@@ -54,12 +102,6 @@ function UserAccount() {
       </h3>
     );
   });
-
-  useEffect(() => {
-    console.log("ran");
-  }, [myChatRooms]);
-
-  console.log("page rendering");
 
   return (
     <div>
@@ -82,6 +124,27 @@ function UserAccount() {
         ""
       )}
 
+      <div className="search-container">
+        <input
+          type={"text"}
+          placeholder="Search"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setQuery(e.target.value.toLowerCase());
+            console.log(query);
+          }}
+        />
+
+        <div
+          className={
+            query.length >= 1
+              ? "search-result-container"
+              : "search-result-container active"
+          }
+        >
+          {searchItems}
+        </div>
+      </div>
+
       <div className="useraccount-body">
         <section className="mygroups-section">
           <h1>My chat rooms</h1>
@@ -91,7 +154,9 @@ function UserAccount() {
         <section className="chat-section">
           <Chat />
         </section>
-        <section className="myfriends-section"></section>
+        <section className="chatroom-info">
+          <ChatRoomInfo oneChatRoom={oneChatRoom.chatroom_name} />
+        </section>
       </div>
     </div>
   );

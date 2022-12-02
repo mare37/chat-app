@@ -23,3 +23,29 @@
 .myfriends-section{
     width:20%
 }
+
+
+.search-container{
+  position: relative;
+  display: inline-block;
+}
+
+.search-result-container{
+    position: absolute;
+    width: 130%;
+    height: 300px;
+    background-color:rgb(192, 206, 206);
+   
+}
+
+.search-result-container.active{
+    top: -10000%;
+
+}
+
+.chatroom-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+}

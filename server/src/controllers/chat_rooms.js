@@ -42,20 +42,37 @@ const getAllChatRooms =(req,res)=>{
 
     const user_id = req.query.userId;
 
+    if(user_id !== undefined){
+        const query = "SELECT * FROM chat_room WHERE fk_admin_users_user_id = (?)"
 
-    const query = "SELECT * FROM chat_room WHERE fk_admin_users_user_id = (?)"
+        db.query(query,[user_id],(err,result)=>{
+            if(err){
+                console.log(err);
+                res.send("FAILED")
+                return
+            }
+    
+            //console.log(result);
+            res.send(result)
+    
+        })
 
-    db.query(query,[user_id],(err,result)=>{
-        if(err){
-            console.log(err);
-            res.send("FAILED")
-            return
-        }
+    }else{
+        const query = "SELECT *FROM chat_room";
 
-        //console.log(result);
-        res.send(result)
+        db.query(query,(err,result)=>{
+            if(err){
+                console.log(err);
+                res.send("Failed")
+                return
+            }
+            res.send(result)
+        })
 
-    })
+    }
+
+
+   
 
 }
 

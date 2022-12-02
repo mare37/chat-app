@@ -15,6 +15,7 @@ router.use(cookieParser())
 
 router.post("/", createChatRoom)
 router.get("/", getAllChatRooms )
+//
 
 module.exports =router;
 

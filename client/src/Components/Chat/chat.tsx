@@ -28,7 +28,7 @@ function Chat(props : any) {
     });
   };
 
-  console.log("Chat rendered");
+  
   
 
   useEffect(() => {
