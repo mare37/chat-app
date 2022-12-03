@@ -1,76 +1,15 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
-import { setUser } from "../../usernameSlice";
-import useDetails from "../../Hooks/useUserService";
-
-axios.defaults.withCredentials = true;
+import { useDetails } from "../../Hooks/useUserService";
 
 function LogIn() {
-  const user = useSelector((state: RootState) => state.object.username);
-  const dispatch = useDispatch();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState(user);
 
-  const navigate = useNavigate();
-
-  const { submitLoginDetails } = useDetails(email, password);
+  const { submitLoginDetails, getLogin } = useDetails(email, password);
 
   useEffect(() => {
-    console.log("effect login");
-
-    axios
-      .get("http://localhost:5000/api/logInStatus")
-      .then((response) => {
-        console.log(response.data.login);
-        console.log(response.data);
-
-        if (response.data.login) {
-          console.log("you are in");
-
-          console.log(user);
-
-          navigate(`/user/${userName}`);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getLogin();
   }, []);
-
-  /*const submitLoginDetails = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
-
-    try {
-      const response = await axios.post("http://localhost:5000/api/login", {
-        email: email,
-        password: password,
-      });
-      console.log(response.data);
-      
-
-      if (response.data.auth) {
-        console.log("you are in");
-        const user ={username:response.data.user_name, userid:response.data.user_id}
-        dispatch(setUser(user));
-        console.log(response.data);
-        
-       
-
-       navigate(`/user/${response.data.user_name}`)
-      } else {
-        console.log("you are out");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
-    //console.log(response.data);
-  };*/
 
   return (
     <div
