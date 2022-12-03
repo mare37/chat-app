@@ -5,11 +5,12 @@ import { setUser } from "../usernameSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import { Login, getLoginStatus } from "../Services/UserService";
+import { Login, getLoginStatus } from "../Services/Users";
 
 axios.defaults.withCredentials = true;
 
-const useDetails = (email: any, password: any) => {
+  //Submit login details to log into user account
+const useLoginUser = (email: any, password: any) => {
   const user = useSelector((state: RootState) => state.object.username);
   const dispatch = useDispatch();
   const [userName, setUserName] = useState(user);
@@ -18,7 +19,7 @@ const useDetails = (email: any, password: any) => {
 
 
 
-  //Submit login details to log into user account
+
   const submitLoginDetails = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
@@ -42,7 +43,29 @@ const useDetails = (email: any, password: any) => {
 
 
 
-  //Find if user is logged in and redirect to user homepage else redirect to login page
+ 
+ 
+
+  return { submitLoginDetails };
+};
+
+
+
+
+
+
+
+
+
+
+
+ //Find if user is logged in and redirect to user homepage else redirect to login page
+const useGetLoginStatus = () =>{
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.object.username);
+  const dispatch = useDispatch();
+  const [userName, setUserName] = useState(user);
+ 
   const getLogin = async () => {
     console.log("getting login");
 
@@ -53,17 +76,21 @@ const useDetails = (email: any, password: any) => {
       switch (response.isLoggedIn) {
         case true:
           navigate(`/user/${userName}`);
+         console.log("uko ndani");
+         
           break;
 
         case false:
           console.log("You are not logged in");
-          navigate(`/login`);
+        //  navigate(`/login`);
           break;
       }
     }
   };
 
-  return { submitLoginDetails, getLogin };
-};
 
-export { useDetails };
+  return {getLogin};
+  
+  } 
+
+export {useLoginUser , useGetLoginStatus };

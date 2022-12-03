@@ -7,9 +7,14 @@ import Chat from "../Chat/chat";
 import "./useraccount.css";
 import ChatRoomInfo from "./chatroomifo";
 
+import {useGetUserChatRooms}  from "../../Hooks/Chatrooms"
+
 axios.defaults.withCredentials = true;
 
 function UserAccount() {
+ 
+  const {  getChatrooms, myChatRooms } = useGetUserChatRooms();
+
   const { username } = useParams();
 
   interface Item {
@@ -21,7 +26,7 @@ function UserAccount() {
   //chatroom_membersNo: "",
   const userId = useSelector((state: RootState) => state.object.userid);
   const [createGroup, setCreateGroup] = useState(false);
-  const [myChatRooms, setMyChatRooms] = useState<Array<Item>>([]);
+ 
   const [query, setQuery] = useState("");
   const [searchItems, setSearchItems] = useState([]);
   const [requestToJoin, setRequestToJoin] = useState(false);
@@ -32,13 +37,7 @@ function UserAccount() {
 
   //Getting all my chat rooms in which this user account is the admin
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/chat_rooms", {
-        params: { userId: userId },
-      })
-      .then((response) => {
-        setMyChatRooms(response.data);
-      });
+      getChatrooms(userId);
   }, []);
 
  // console.log(myChatRooms);
@@ -66,7 +65,7 @@ function UserAccount() {
   }, [query]);
 
   const getChatRoomInfo = (id: number) => {
-    const oneChatRoom = myChatRooms.filter((item) => {
+    const oneChatRoom = myChatRooms.filter((item) => {  
       if (item.chatroom_id === id) {
         return true;
       } else {

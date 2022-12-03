@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
-import { useDetails } from "../../Hooks/useUserService";
+import { useLoginUser , useGetLoginStatus } from "../../Hooks/Users";
 
 function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { submitLoginDetails, getLogin } = useDetails(email, password);
+  const { submitLoginDetails} = useLoginUser (email, password);
+  const {  getLogin } = useGetLoginStatus()
 
+
+
+
+  //Determine if user is logged in,any time this page reloads
   useEffect(() => {
     getLogin();
   }, []);
