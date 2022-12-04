@@ -82,7 +82,7 @@ const useGetLoginStatus = () =>{
 
         case false:
           console.log("You are not logged in");
-        //  navigate(`/login`);
+          navigate(`/login`);
           break;
       }
     }
