@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Chat from "./Components/Chat/chat";
+
 import Home from "./Components/Home/home";
 import LogIn from "./Components/Login/login";
 
