@@ -2,18 +2,40 @@ import { useEffect, useState } from "react";
 import * as React from "react";
 import { io } from "socket.io-client";
 import "./chat.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+
 
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
 });
 
-function Chat(props : any) {
+
+   interface Props {
+    username:string,
+    chatroom_id: number
+   }
+
+
+function Chat({username, chatroom_id}: Props  ) {
+  const singleChatroom = useSelector(
+    (state: RootState) => state.reducer.singlechatroom.object
+  );
+
+
+
+
   const [message, setMessage] = useState([""]);
   const [messageToBeSent, setmessageToBeSent] = useState("");
   const [roomMessage, setRoomMessage] = useState("");
-  
+ 
+
+
+
+
 
   socket.on("connect", () => {
+   
     console.log("Server connected");
   });
   socket.on("disconnect", () => {
@@ -23,18 +45,22 @@ function Chat(props : any) {
 
   const joinRoom = async () => {
     await socket.emit("join_room", {
-      room: props.room,
-      firstName: props.firstName,
-      secondName: props.secondName,
+      room:  chatroom_id,
+      firstName: username,
+      
     });
+    console.log(`${username} You have joined ${singleChatroom.chatroom_id}`);
   };
 
   
   
 
   useEffect(() => {
+   // setchatroomId(chatroom_id)
+   
+    
     joinRoom();
-  }, []);
+  }, [singleChatroom.chatroom_id]);
 
   //join room
   
@@ -43,10 +69,10 @@ function Chat(props : any) {
   const sendMessage = async () => {
     if (messageToBeSent.length > 0) {
       await socket.emit("send_message", {
-        room: props.room,
+        room: chatroom_id,
         messageToBeSent: messageToBeSent,
-        authorFirstName: props.firstName,
-        authorSecondName: props.secondName,
+        authorFirstName: username,
+        
       });
     } else {
       console.log("You havent typed anything");
@@ -71,12 +97,12 @@ function Chat(props : any) {
         <div
         key={index}
           className={
-            props.firstName === item[0] && props.secondName === item[1]
+            username === item[0] 
               ? "text-message active"
               : "text-message"
           }
         >
-          <p className={props.firstName === item[0] && props.secondName === item[1]
+          <p className={username === item[0]
               ? "text-paragraph"
               : "text-paragraph active" }   key={index}>{item[2]}</p>
         </div>

@@ -1,8 +1,7 @@
 import * as React from "react";
 
 function ChatRoomInfo(props:any){
-
-
+    
     return(
         <div>
             <div>{props.oneChatRoom}</div>

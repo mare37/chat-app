@@ -17,32 +17,29 @@ axios.defaults.withCredentials = true;
 
 function UserAccount() {
   const { username } = useParams();
-  const userId = useSelector((state: RootState) => state.object.userid);
-
+  const user = useSelector(
+    (state: RootState) => state.reducer.user.object
+  );
+  const singleChatroom = useSelector(
+    (state: RootState) => state.reducer.singlechatroom.object
+  );
+  //console.log(singleChatroom);
 
   //destructuring what is needed from chat room hooks
-  const {
-    getChatRoomInfo,
-    getChatrooms,
-    myChatRooms,
-    oneChatRoom,
-  } = useGetUsersChatRooms();
+  const { getChatRoomInfo, getChatrooms, myChatRooms, oneChatRoom } =
+    useGetUsersChatRooms();
 
   const { getSeachedChartRooms, searchItems, setSearchItems } =
     useGetSearchedChatRooms();
 
-
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
-
-
-
+  const [chat, setChat] = useState(false);
 
   //Getting all my chat rooms in which this user account is the admin
   useEffect(() => {
-    getChatrooms(userId);
+    getChatrooms(user.userid);
   }, []);
-
 
   //Get  chat rooms that have been searched in the search bar
   useEffect(() => {
@@ -53,15 +50,17 @@ function UserAccount() {
     }
   }, [query]);
 
- //wrapping list of users chatrooms in a html element,we give each element
- //an onClick function that will call getChatRooInfo function to highlight 
- //one member when clicked
+  //wrapping list of users chatrooms in a html element,we give each element
+  //an onClick function that will call getChatRooInfo function to highlight
+  //one member when clicked
   let myChatRoomsData = myChatRooms.map((chatRoom, index) => {
     return (
       <h3
         onClick={() => {
-          console.log(chatRoom.chatroom_id);
+          // console.log(chatRoom.chatroom_id);
+          setChat(true)
           getChatRoomInfo(chatRoom.chatroom_id);
+        
         }}
         key={index}
       >
@@ -119,12 +118,17 @@ function UserAccount() {
           {myChatRoomsData}
         </section>
         <section className="chat-section">
-          <Chat />
+         {chat?  <Chat username={user.username}
+                chatroom_id={singleChatroom.chatroom_id}
+                
+           />:""  }
+
+
         </section>
         <section className="chatroom-info">
           <ChatRoomInfo
-            oneChatRoom={oneChatRoom.chatroom_name}
-            numberOfMembers={oneChatRoom.chatroom_membersNo}
+            oneChatRoom={singleChatroom.chatroom_name}
+            numberOfMembers={singleChatroom.chatroom_membersNo}
           />
         </section>
       </div>

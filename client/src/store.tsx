@@ -1,9 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import userReducer from "./usernameSlice"
+import  singlechatroomReducer from "./Redux/Chatrooms/SingleChatroomSlice"
+
+
+const rootReduce = combineReducers({
+  user: userReducer,
+  singlechatroom: singlechatroomReducer
+})
 
 
 
@@ -12,12 +19,15 @@ const persistConfig = {
   storage,
 }
 
-const persistedReducer = persistReducer(persistConfig, userReducer)
+const persistedReducer = persistReducer(persistConfig,rootReduce)
+
 
 
 
 export const store = configureStore({
-    reducer:persistedReducer,
+    reducer:{
+      reducer: persistedReducer,
+    },
     middleware: [thunk]
   })
 

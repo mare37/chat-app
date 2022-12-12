@@ -5,7 +5,7 @@ const db = require("../config/database");
 const  getAllMembers =(req,res)=>{
 
     const id = req.params;
-    console.log(id );
+   // console.log(id );
 
    
 
@@ -18,7 +18,7 @@ const  getAllMembers =(req,res)=>{
          res.send("FAILED")
          return
      }
-     console.log(result);
+     //console.log(result);
      res.send({Message:"success", data:result})
  })
 

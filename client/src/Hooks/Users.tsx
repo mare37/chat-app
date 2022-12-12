@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 
   //Submit login details to log into user account
 const useLoginUser = (email: any, password: any) => {
-  const user = useSelector((state: RootState) => state.object.username);
+  const user = useSelector((state: RootState) => state.reducer.user.object.username);
   const dispatch = useDispatch();
   const [userName, setUserName] = useState(user);
 
@@ -62,7 +62,7 @@ const useLoginUser = (email: any, password: any) => {
  //Find if user is logged in and redirect to user homepage else redirect to login page
 const useGetLoginStatus = () =>{
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.object.username);
+  const user = useSelector((state: RootState) => state.reducer.user.object.username);
   const dispatch = useDispatch();
   const [userName, setUserName] = useState(user);
  
