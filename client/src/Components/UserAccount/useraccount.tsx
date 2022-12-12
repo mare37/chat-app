@@ -6,7 +6,7 @@ import { RootState } from "../../store";
 import Chat from "../Chat/chat";
 import "./useraccount.css";
 import ChatRoomInfo from "./chatroomifo";
-
+import * as React from "react";
 //importing chatroom hooks
 import {
   useGetUsersChatRooms,

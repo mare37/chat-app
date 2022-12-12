@@ -1,4 +1,4 @@
-
+import * as React from "react";
 
 function ChatRoomInfo(props:any){
 

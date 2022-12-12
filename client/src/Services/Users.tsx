@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import * as React from "react";
 axios.defaults.withCredentials = true;
 
 
@@ -37,12 +37,13 @@ const Login = async (email: any, password: any) => {
   } catch (err) {
     console.log(err);
   }
+  
 };
 
 
 
 const getLoginStatus = async () => {
-  const response = await axios.get("http://localhost:5000/api/logInStatus");
+  const response = await axios.get("http://localhost:5000/api/logInStatus");  
 
   try {
     console.log(response.data.login);
@@ -62,4 +63,6 @@ const getLoginStatus = async () => {
   }
 };
 
-export { Login, getLoginStatus };
+
+
+export { Login, getLoginStatus};

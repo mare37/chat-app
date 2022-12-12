@@ -1,9 +1,9 @@
-import { useState } from "react";
+import * as React from 'react'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Chat from "./Components/Chat/chat";
 import Home from "./Components/Home/home";
-import LogIn from "./Components/Login/Login";
+import LogIn from "./Components/Login/login";
 
 import UserAccount from "./Components/UserAccount/useraccount";
 import Admin from "./Components/Admin/admin";
