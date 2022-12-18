@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import Chat from "../Chat/chat";
+import Chat from "../../Components/Chat/chat";
 import "./useraccount.css";
 import ChatRoomInfo from "./chatroomifo";
 import * as React from "react";
-import { io } from "socket.io-client";
+import SendRequest from "../../Components/SendRequest/SendRequest";
 //importing chatroom hooks
 import {
   useGetUsersChatRooms,
   useGetSearchedChatRooms,
 } from "../../Hooks/Chatrooms";
-
+import { SocketContext } from "../../context";
 
 axios.defaults.withCredentials = true;
 
@@ -21,7 +21,7 @@ axios.defaults.withCredentials = true;
 
 
 function UserAccount() {
-
+  const socket = useContext(SocketContext)
   const { username } = useParams();
   const user = useSelector(
     (state: RootState) => state.reducer.user.object
@@ -41,6 +41,7 @@ function UserAccount() {
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
   const [chat, setChat] = useState(false);
+  const [sendRequest, setsendRequest] = useState(false);
 
 
 
@@ -59,6 +60,16 @@ function UserAccount() {
       setSearchItems([]);
     }
   }, [query]);
+
+  useEffect(() => {
+      
+    socket.on("room_joined_sucessfully", (data) => {
+        console.log(data);
+        setChat(data[1])
+      
+     // setRoomMessage(data);
+    });
+  }, [socket]);
 
   //wrapping list of users chatrooms in a html element,we give each element
   //an onClick function that will call getChatRooInfo function to highlight
@@ -129,10 +140,12 @@ function UserAccount() {
           {myChatRoomsData}
         </section>
         <section className="chat-section">
-    <Chat username={user.username}
+
+          {chat ?  <Chat username={user.username}
                 chatroom_id={singleChatroom.chatroom_id}
                 
-           />
+           />: ""  }
+   
 
 
         </section>

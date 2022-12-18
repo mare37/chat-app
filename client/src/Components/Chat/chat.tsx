@@ -1,18 +1,9 @@
 import { useEffect, useState, FC,useContext } from "react";
 import * as React from "react";
-import { io,Socket } from "socket.io-client";
 import "./chat.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import  {SocketContext} from "../../context"
-
-
-//const socket = io("http://localhost:5000", { 
- // transports: ["websocket"],
-//});
-
-
-
 
 
 
@@ -22,8 +13,9 @@ import  {SocketContext} from "../../context"
    }
 
 
-function Chat ({username, chatroom_id}: Props )   {
+function Chat ({username, chatroom_id}: Props ) {
   const socket = useContext(SocketContext)
+
   const singleChatroom = useSelector(
     (state: RootState) => state.reducer.singlechatroom.object
   );
@@ -32,26 +24,13 @@ function Chat ({username, chatroom_id}: Props )   {
 
 
 
-  const [message, setMessage] = useState([""]);
-  const [messageToBeSent, setmessageToBeSent] = useState("");
-  const [roomMessage, setRoomMessage] = useState("");
+  const [message, setMessage] = useState<string[]>([""]);
+  const [messageToBeSent, setmessageToBeSent] = useState<string>("");
+  const [roomMessage, setRoomMessage] = useState<string>("");
  
 
 
-
-
-
- /* socket.on("connect", () => {
-   
-    console.log("Server connected");
-  });
-  socket.on("disconnect", () => {
-    console.log("Server disconnected");
-  });*/
-
-
   const joinRoom = async () => {
-   // console.log("FUNCTION HAS BEEN CALLED");
     
     await socket.emit("join_room", { 
       room:  singleChatroom.chatroom_id,
@@ -59,18 +38,18 @@ function Chat ({username, chatroom_id}: Props )   {
       userId: user.userid
       
     });
-   // console.log(`${username} You have joined ${singleChatroom.chatroom_id}`);
+   
   };
 
   
   
 
   useEffect(() => {
-   // setchatroomId(chatroom_id)
+   
     joinRoom();
   }, [singleChatroom.chatroom_id]);
 
-  //join room
+
   
 
   //send message
@@ -118,10 +97,9 @@ function Chat ({username, chatroom_id}: Props )   {
     });
 
     useEffect(() => {
-      console.log("THIS RAN");
       
       socket.on("room_joined_sucessfully", (data) => {
-        console.log(data);
+          console.log(data);
         
         setRoomMessage(data);
       });

@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
       socket.join(data.room);
       socket.emit(
         "room_joined_sucessfully",
-       [`${data.firstName} you have joined room ${data.room}`]
+       [`${data.firstName} you have joined room ${data.room}`, true]
       );   
     }
     if(result === false){
@@ -79,7 +79,7 @@ io.on("connection", (socket) => {
      try{
       socket.emit(
         "room_joined_sucessfully",
-       [`${data.firstName} you are not allowed to join room ${data.room}`]
+       [`${data.firstName} you are not allowed to join room ${data.room}`,false]
       );   
 
      }catch(err){

@@ -3,11 +3,11 @@ import {FC} from "react"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 
-import Home from "./Components/Home/home";
-import LogIn from "./Components/Login/login";
+import Home from "./Containers/Home/home";
+import LogIn from "./Containers/Login/login";
 
-import UserAccount from "./Components/UserAccount/useraccount";
-import Admin from "./Components/Admin/admin";
+import UserAccount from "./Containers/UserAccount/useraccount";
+import Admin from "./Containers/Admin/admin";
 import ProtectedRoutes from "./protectedroutes";
 
 import {SocketContext, socket} from "./context";
