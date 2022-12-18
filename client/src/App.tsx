@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {FC} from "react"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -9,8 +10,16 @@ import UserAccount from "./Components/UserAccount/useraccount";
 import Admin from "./Components/Admin/admin";
 import ProtectedRoutes from "./protectedroutes";
 
-function App() {
+import {SocketContext, socket} from "./context";
+
+
+
+
+
+function App  () {
   return <div>
+
+    <SocketContext.Provider  value={socket} >
     <Router>
       <Routes>
        
@@ -26,6 +35,12 @@ function App() {
       </Routes>
 
     </Router>
+
+    </SocketContext.Provider>
+    
+    
+
+   
 
   </div>;
 }

@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const { response } = require("express");
 const validate =  require("./src/middleware/auth");
+const JoinRoom = require("./src/utils/joinroom")
 
 const db = require("./src/config/database")
 
@@ -46,22 +47,56 @@ app.get("/", validate, (req, res) => {
 io.on("connection", (socket) => {
   // console.log(`User connected ${socket.id}`);
 
-  socket.on("join_room", (data, err) => {
+  socket.on("join_room", async (data, err) => {
     if (err) {
       console.log(err);
     }
-    console.log(data);
-    socket.join(data.room);
+
+   //console.log(data);
+      
+    //function returns a boolean
+    const result = await JoinRoom(data.room, data.userId);
+    console.log(result);
+
+  /* socket.join(data.room);
     socket.emit(
       "room_joined_sucessfully",
-      `${data.firstName} you have joined room ${data.room}`
-    );
+     [`${data.firstName} you are not allowed to join room ${data.room}`]
+    );  */
+
+
+    if(result === true){
+     // console.log(data)
+      socket.join(data.room);
+      socket.emit(
+        "room_joined_sucessfully",
+       [`${data.firstName} you have joined room ${data.room}`]
+      );   
+    }
+    if(result === false){
+      console.log(data);
+     // socket.join(data.room);
+     try{
+      socket.emit(
+        "room_joined_sucessfully",
+       [`${data.firstName} you are not allowed to join room ${data.room}`]
+      );   
+
+     }catch(err){
+      console.log(err);
+     }
+     
+
+    }
+  
+
+   
   });
 
   socket.on("send_message", (data) => {
     console.log(data.messageToBeSent);
     console.log(data.authorFirstName);
-    console.log(data.authorSecondName);
+   
     socket.emit("received_message", [
       data.authorFirstName,
       data.authorSecondName,

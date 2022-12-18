@@ -13,7 +13,7 @@ axios.defaults.withCredentials = true;
 const useLoginUser = (email: any, password: any) => {
   const user = useSelector((state: RootState) => state.reducer.user.object.username);
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState(user);
+  const [userName, setUserName] = useState<string>(user); 
 
   const navigate = useNavigate();
 

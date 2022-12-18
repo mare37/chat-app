@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC,useContext } from "react";
 import * as React from "react";
-import { io } from "socket.io-client";
+import { io,Socket } from "socket.io-client";
 import "./chat.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import  {SocketContext} from "../../context"
 
 
-const socket = io("http://localhost:5000", {
-  transports: ["websocket"],
-});
+//const socket = io("http://localhost:5000", { 
+ // transports: ["websocket"],
+//});
+
+
+
+
 
 
    interface Props {
@@ -17,10 +22,12 @@ const socket = io("http://localhost:5000", {
    }
 
 
-function Chat({username, chatroom_id}: Props  ) {
+function Chat ({username, chatroom_id}: Props )   {
+  const socket = useContext(SocketContext)
   const singleChatroom = useSelector(
     (state: RootState) => state.reducer.singlechatroom.object
   );
+  const user = useSelector((state: RootState) => state.reducer.user.object);
 
 
 
@@ -34,22 +41,25 @@ function Chat({username, chatroom_id}: Props  ) {
 
 
 
-  socket.on("connect", () => {
+ /* socket.on("connect", () => {
    
     console.log("Server connected");
   });
   socket.on("disconnect", () => {
     console.log("Server disconnected");
-  });
+  });*/
 
 
   const joinRoom = async () => {
-    await socket.emit("join_room", {
-      room:  chatroom_id,
-      firstName: username,
+   // console.log("FUNCTION HAS BEEN CALLED");
+    
+    await socket.emit("join_room", { 
+      room:  singleChatroom.chatroom_id,
+      firstName: user.username,
+      userId: user.userid
       
     });
-    console.log(`${username} You have joined ${singleChatroom.chatroom_id}`);
+   // console.log(`${username} You have joined ${singleChatroom.chatroom_id}`);
   };
 
   
@@ -57,8 +67,6 @@ function Chat({username, chatroom_id}: Props  ) {
 
   useEffect(() => {
    // setchatroomId(chatroom_id)
-   
-    
     joinRoom();
   }, [singleChatroom.chatroom_id]);
 
@@ -109,11 +117,16 @@ function Chat({username, chatroom_id}: Props  ) {
       );
     });
 
-  useEffect(() => {
-    socket.on("room_joined_sucessfully", (data) => {
-      setRoomMessage(data);
-    });
-  }, [socket]);
+    useEffect(() => {
+      console.log("THIS RAN");
+      
+      socket.on("room_joined_sucessfully", (data) => {
+        console.log(data);
+        
+        setRoomMessage(data);
+      });
+    }, [socket]);
+
 
   return (
     <div className="Chat">

@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState ,useContext} from "react";
 import { getUserChatRooms } from "../Services/Chatrooms";
 import axios from "axios";
 import { setSingleChatroom } from "../Redux/Chatrooms/SingleChatroomSlice";
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-
+import { io } from "socket.io-client";
+import { SocketContext } from "../context";
 
 interface Item {
   chatroom_id: 0;
@@ -30,7 +31,7 @@ const useGetUsersChatRooms = () => {
   
 
   //first function
-  const getChatrooms = async (userId: number) => {
+  const getChatrooms = async (userId: number)  => {
     const response = await getUserChatRooms(userId);
 
     console.log(response);
@@ -103,23 +104,45 @@ const useGetUsersChatRooms = () => {
 
 //Get chat rooms that have been searched by this user in the search bar
 const useGetSearchedChatRooms = () => {
+ const socket = useContext(SocketContext)
+
+
+const user = useSelector((state: RootState) => state.reducer.user.object);
   const [searchItems, setSearchItems] = useState([]);
+
+  const joinChatRoom =  async (roomId: number)=>{
+    console.log("THIS FUNCTION 2 RAN");
+    
+    await socket.emit("join_room", {  
+      room:  roomId,
+      firstName: user.username,
+      userId: user.userid
+      
+    });
+  }
+
 
   const getSeachedChartRooms = (query: any) => {
     axios.get("http://localhost:5000/api/chat_rooms").then((response) => {
+     
+      
       let data = response.data.filter((item: any) => {
         return item.chatroom_name.toLowerCase().includes(query);
       });
+      console.log(data);
 
       let data2 = data.map((item: any, key: number) => {
-        return <p key={key}>{item.chatroom_name}</p>;
+        return <p  onClick={()=>{joinChatRoom(item.chatroom_id)}} key={key}>{item.chatroom_name}</p>;
       });
 
       setSearchItems(data2);
     });
   };
 
-  return { getSeachedChartRooms, searchItems, setSearchItems };
+  
+
+
+  return { getSeachedChartRooms, searchItems, setSearchItems, joinChatRoom };
 };
 
 export { useGetUsersChatRooms, useGetSearchedChatRooms };

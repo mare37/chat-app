@@ -7,15 +7,21 @@ import Chat from "../Chat/chat";
 import "./useraccount.css";
 import ChatRoomInfo from "./chatroomifo";
 import * as React from "react";
+import { io } from "socket.io-client";
 //importing chatroom hooks
 import {
   useGetUsersChatRooms,
   useGetSearchedChatRooms,
 } from "../../Hooks/Chatrooms";
 
+
 axios.defaults.withCredentials = true;
 
+
+
+
 function UserAccount() {
+
   const { username } = useParams();
   const user = useSelector(
     (state: RootState) => state.reducer.user.object
@@ -29,17 +35,21 @@ function UserAccount() {
   const { getChatRoomInfo, getChatrooms, myChatRooms, oneChatRoom } =
     useGetUsersChatRooms();
 
-  const { getSeachedChartRooms, searchItems, setSearchItems } =
+  const { joinChatRoom,     getSeachedChartRooms, searchItems, setSearchItems } =
     useGetSearchedChatRooms();
 
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
   const [chat, setChat] = useState(false);
 
+
+
   //Getting all my chat rooms in which this user account is the admin
   useEffect(() => {
     getChatrooms(user.userid);
   }, []);
+
+
 
   //Get  chat rooms that have been searched in the search bar
   useEffect(() => {
@@ -60,6 +70,7 @@ function UserAccount() {
           // console.log(chatRoom.chatroom_id);
           setChat(true)
           getChatRoomInfo(chatRoom.chatroom_id);
+          //joinChatRoom(chatRoom.chatroom_id);
         
         }}
         key={index}
@@ -118,10 +129,10 @@ function UserAccount() {
           {myChatRoomsData}
         </section>
         <section className="chat-section">
-         {chat?  <Chat username={user.username}
+    <Chat username={user.username}
                 chatroom_id={singleChatroom.chatroom_id}
                 
-           />:""  }
+           />
 
 
         </section>
