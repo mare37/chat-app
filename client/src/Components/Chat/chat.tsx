@@ -33,7 +33,7 @@ function Chat ({username, chatroom_id}: Props ) {
   const joinRoom = async () => {
     
     await socket.emit("join_room", { 
-      room:  singleChatroom.chatroom_id,
+      room: singleChatroom.chatroom_id,
       firstName: user.username,
       userId: user.userid
       
@@ -49,6 +49,16 @@ function Chat ({username, chatroom_id}: Props ) {
     joinRoom();
   }, [singleChatroom.chatroom_id]);
 
+
+  useEffect(() => {
+      
+    socket.on("room_joined_sucessfully", (data) => {
+        console.log(data);
+        //setChat(data[1])
+      
+     // setRoomMessage(data);
+    });
+  }, [socket]);
 
   
 
@@ -96,14 +106,7 @@ function Chat ({username, chatroom_id}: Props ) {
       );
     });
 
-    useEffect(() => {
-      
-      socket.on("room_joined_sucessfully", (data) => {
-          console.log(data);
-        
-        setRoomMessage(data);
-      });
-    }, [socket]);
+  
 
 
   return (

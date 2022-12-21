@@ -20,7 +20,7 @@ async function JoinRoom(roomId, userId){
 
     })
     if(response.length > 0){
-        console.log(response.length);
+       // console.log(response.length);
         return  true;
    }else{
        return false;

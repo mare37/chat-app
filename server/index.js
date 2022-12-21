@@ -45,7 +45,7 @@ app.get("/", validate, (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  // console.log(`User connected ${socket.id}`);
+   console.log(`User connected ${socket.id}`);
 
   socket.on("join_room", async (data, err) => {
     if (err) {
@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
       );   
     }
     if(result === false){
-      console.log(data);
+     // console.log(data);
      // socket.join(data.room);
      try{
       socket.emit(
@@ -112,7 +112,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+
+    
     console.log(`User disconnected ${socket.id}`);
+    socket.disconnect(true);
   });
 });
 

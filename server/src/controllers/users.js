@@ -122,7 +122,7 @@ const logOut = (req,res)=>{
 
 const logInStatus = (req,res)=>{
 
-  console.log("You are logged in");
+ // console.log("You are logged in");
 
   res.send({login:true,message:"You are logged in"})
 

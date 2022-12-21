@@ -8,6 +8,7 @@ import "./useraccount.css";
 import ChatRoomInfo from "./chatroomifo";
 import * as React from "react";
 import SendRequest from "../../Components/SendRequest/SendRequest";
+import Welcome from "../../Components/WelcomeToChat/Welcome";
 //importing chatroom hooks
 import {
   useGetUsersChatRooms,
@@ -41,7 +42,7 @@ function UserAccount() {
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
   const [chat, setChat] = useState(false);
-  const [sendRequest, setsendRequest] = useState(false);
+  const [sendRequest, setsendRequest] = useState(true);
 
 
 
@@ -65,11 +66,13 @@ function UserAccount() {
       
     socket.on("room_joined_sucessfully", (data) => {
         console.log(data);
-        setChat(data[1])
+        setsendRequest(data[1])
       
      // setRoomMessage(data);
     });
   }, [socket]);
+
+ 
 
   //wrapping list of users chatrooms in a html element,we give each element
   //an onClick function that will call getChatRooInfo function to highlight
@@ -79,8 +82,11 @@ function UserAccount() {
       <h3
         onClick={() => {
           // console.log(chatRoom.chatroom_id);
-          setChat(true)
+         
           getChatRoomInfo(chatRoom.chatroom_id);
+          setsendRequest(true)
+          setChat(true)
+          
           //joinChatRoom(chatRoom.chatroom_id);
         
         }}
@@ -92,7 +98,7 @@ function UserAccount() {
   });
 
   return (
-    <div>
+    <div onClick={()=>{setQuery("")}}>
       <div>{`WELCOME ${username}`}</div>
 
       <button
@@ -125,7 +131,7 @@ function UserAccount() {
         <div
           className={
             query.length >= 1
-              ? "search-result-container"
+              ? "search-result-container" 
               : "search-result-container active"
           }
         >
@@ -141,11 +147,10 @@ function UserAccount() {
         </section>
         <section className="chat-section">
 
-          {chat ?  <Chat username={user.username}
+        {  !sendRequest? <SendRequest/> : ( chat?  <Chat username={user.username}
                 chatroom_id={singleChatroom.chatroom_id}
                 
-           />: ""  }
-   
+           />: <Welcome/>)}
 
 
         </section>
