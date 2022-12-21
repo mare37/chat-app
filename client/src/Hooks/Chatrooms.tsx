@@ -1,7 +1,8 @@
 import { useState ,useContext} from "react";
-import { getUserChatRooms } from "../Services/Chatrooms";
+import { getUserChatRooms } from "../Services/Chatrooms/Chatrooms";
 import axios from "axios";
 import { setSingleChatroom } from "../Redux/Chatrooms/SingleChatroomSlice";
+import { setChatroomId } from "../Redux/Chatroom_Requests/ChatRoomIdSlice";
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
@@ -105,13 +106,20 @@ const useGetUsersChatRooms = () => {
 //Get chat rooms that have been searched by this user in the search bar
 const useGetSearchedChatRooms = () => {
  const socket = useContext(SocketContext)
+ const dispatch = useDispatch();
 
 
 const user = useSelector((state: RootState) => state.reducer.user.object);
   const [searchItems, setSearchItems] = useState([]);
 
   const joinChatRoom =  async (roomId: number)=>{
+
+    const Id ={chatroom_id:roomId}
+     
+    dispatch(setChatroomId(Id));
+
     console.log("THIS FUNCTION 2 RAN");
+
     
     await socket.emit("join_room", {  
       room:  roomId,

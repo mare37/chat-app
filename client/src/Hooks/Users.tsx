@@ -5,7 +5,7 @@ import { setUser } from "../usernameSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-import { Login, getLoginStatus } from "../Services/Users";
+import { Login, getLoginStatus } from "../Services/Users/Users";
 
 axios.defaults.withCredentials = true;
 

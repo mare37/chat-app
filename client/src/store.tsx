@@ -5,11 +5,13 @@ import thunk from 'redux-thunk';
 
 import userReducer from "./usernameSlice"
 import  singlechatroomReducer from "./Redux/Chatrooms/SingleChatroomSlice"
+import chatroomIdReducer from "./Redux/Chatroom_Requests/ChatRoomIdSlice"
 
 
 const rootReduce = combineReducers({
   user: userReducer,
-  singlechatroom: singlechatroomReducer
+  singlechatroom: singlechatroomReducer,
+  chatroomId: chatroomIdReducer
 })
 
 
