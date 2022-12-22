@@ -116,7 +116,7 @@ const user = useSelector((state: RootState) => state.reducer.user.object);
 
     const Id ={chatroom_id:roomId}
      
-    dispatch(setChatroomId(Id));
+    dispatch(setChatroomId(Id))
 
     console.log("THIS FUNCTION 2 RAN");
 
@@ -135,7 +135,7 @@ const user = useSelector((state: RootState) => state.reducer.user.object);
      
       
       let data = response.data.filter((item: any) => {
-        return item.chatroom_name.toLowerCase().includes(query);
+        return item.chatroom_name.toLowerCase().includes(query)
       });
       console.log(data);
 
