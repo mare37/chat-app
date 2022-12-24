@@ -15,7 +15,7 @@ const sendRequest = async (userid: number, chatroomId: number) => {
     //  console.log(response)
       
   }catch(err){
-    console.log(err);
+    console.log(err)
     
   }
   

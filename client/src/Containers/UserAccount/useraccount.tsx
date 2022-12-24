@@ -1,8 +1,9 @@
 import { useState, useEffect,useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
+import { SetsendRequest } from "../../Redux/Chatroom_Requests/SetRequestSlice";
 import Chat from "../../Components/Chat/chat";
 import "./useraccount.css";
 import ChatRoomInfo from "./chatroomifo";
@@ -24,12 +25,18 @@ axios.defaults.withCredentials = true;
 function UserAccount() {
   const socket = useContext(SocketContext)
   const { username } = useParams();
+  const dispatch = useDispatch();
   const user = useSelector(
     (state: RootState) => state.reducer.user.object
   );
   const singleChatroom = useSelector(
     (state: RootState) => state.reducer.singlechatroom.object
   );
+
+  const sedRequest = useSelector((state:RootState)=>{
+    return state.reducer.sendRequest.object.SendRequest
+  })
+
   //console.log(singleChatroom);
 
   //destructuring what is needed from chat room hooks
@@ -41,14 +48,21 @@ function UserAccount() {
 
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
-  const [chat, setChat] = useState(false);
-  const [sendRequest, setsendRequest] = useState(true);
+  const [chat, setChat] = useState<boolean | null>(false)
+  const [sendRequest, setsendRequest] = useState<boolean | null>(null)
 
-
+    console.log(chat);
+    
 
   //Getting all my chat rooms in which this user account is the admin
   useEffect(() => {
+
+    let  requestBooleanValue = {SendRequest : true}
+      
+    //dispatch(SetsendRequest(requestBooleanValue))
+
     getChatrooms(user.userid);
+
   }, []);
 
 
@@ -63,10 +77,14 @@ function UserAccount() {
   }, [query]);
 
   useEffect(() => {
-      
+    setsendRequest(null)
     socket.on("room_joined_sucessfully", (data) => {
         console.log(data);
-        setsendRequest(data[1])
+        const  requestBooleanValue = {SendRequest : data[1], message: data[0]}
+      
+        dispatch(SetsendRequest(requestBooleanValue))
+       
+       setsendRequest(data[1])
       
      // setRoomMessage(data);
     });
@@ -84,7 +102,11 @@ function UserAccount() {
           // console.log(chatRoom.chatroom_id);
          
           getChatRoomInfo(chatRoom.chatroom_id);
-          setsendRequest(true)
+
+          let  requestBooleanValue = {SendRequest : true}
+      
+       //  dispatch(SetsendRequest(requestBooleanValue))
+          setsendRequest(null)
           setChat(true)
           
           //joinChatRoom(chatRoom.chatroom_id);
@@ -147,10 +169,9 @@ function UserAccount() {
         </section>
         <section className="chat-section">
 
-        {  !sendRequest? <SendRequest/> : ( chat?  <Chat username={user.username}
-                chatroom_id={singleChatroom.chatroom_id}
-                
-           />: <Welcome/>)}
+        {sendRequest === false ? <SendRequest/> : ( chat === false || null?                
+                <Welcome/>   :   <Chat username={user.username}
+           chatroom_id={singleChatroom.chatroom_id}  />       )}
 
 
         </section>
