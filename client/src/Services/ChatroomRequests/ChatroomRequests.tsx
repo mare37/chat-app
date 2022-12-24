@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const sendRequest = async (userid: number, chatroomId: number) => {
-
+                   console.log(chatroomId);
+                   
   try{
     const response = await axios.post(
         "http://localhost:5000/api/chatroom_requests",
@@ -83,8 +84,26 @@ const checkRequest = async (userid: number, chatroomId: number)=>{
 
 
 
+const getChatRoomRequests = async (chatroomId:number)=>{
+
+
+
+  console.log(chatroomId);
+
+  const response = await axios.get(`http://localhost:5000/api/chatroom_requests/${chatroomId}`);
+
+  console.log(response.data)
+
+  return response.data.length
+  
+  
+
+
+}
 
 
 
 
-export { sendRequest, checkRequest };
+
+
+export { sendRequest, checkRequest,getChatRoomRequests };

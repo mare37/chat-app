@@ -169,6 +169,7 @@ function UserAccount() {
         </section>
         <section className="chat-section">
 
+
         {sendRequest === false ? <SendRequest/> : ( chat === false || null?                
                 <Welcome/>   :   <Chat username={user.username}
            chatroom_id={singleChatroom.chatroom_id}  />       )}
@@ -179,6 +180,7 @@ function UserAccount() {
           <ChatRoomInfo
             oneChatRoom={singleChatroom.chatroom_name}
             numberOfMembers={singleChatroom.chatroom_membersNo}
+            numberOfRequests={singleChatroom.chatroom_requestNo}
           />
         </section>
       </div>

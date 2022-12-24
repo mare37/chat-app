@@ -8,6 +8,8 @@ const SingleChatroomSlice = createSlice({
         chatroom_name: "",
         chatroom_id:0,
         chatroom_membersNo: 0,
+        chatroom_requestNo:0
+
       } },
     reducers:{
       setSingleChatroom:(state ,action)=>{ 

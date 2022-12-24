@@ -6,7 +6,7 @@ import {   SetsendRequest } from "../../Redux/Chatroom_Requests/SetRequestSlice"
 
 
 function SendRequest() {
-   
+  const [clicked, setClicked] = useState(false)
   const dispatch = useDispatch()
     
   const chatroomId = useSelector((state:RootState)=>{
@@ -21,6 +21,8 @@ function SendRequest() {
     return state.reducer.sendRequest.object
   })
 
+ 
+
  useEffect( ()=>{
  //console.log(chatroomId);
  console.log("WE ARE ON SEND REQUEST COMPONENT");
@@ -34,7 +36,7 @@ function SendRequest() {
              
              if(typeof response === "boolean"){
 
-              let  requestBooleanValue = {SendRequest : response }
+                 const  requestBooleanValue = {SendRequest :response, message: "CLICKED"}
       
               dispatch(SetsendRequest(requestBooleanValue))
               // setRequestSent(response)
@@ -46,11 +48,7 @@ function SendRequest() {
   
  },[requestSent.message])
 
-useEffect(()=>{
-  console.log("finally");
-  
 
-},[requestSent.message])
  
 
   
@@ -58,7 +56,9 @@ useEffect(()=>{
   return (
     <div>
       <h3>SEND REQUEST TO JOIN THIS CHATROOM</h3>
-      {requestSent.SendRequest? "Request Already Sent" : <button onClick={()=>{sendRequest(userId,chatroomId)}} >SEND REQUEST</button>   }
+      {requestSent.SendRequest || clicked? "Request Already Sent" : <button onClick={()=>{
+        setClicked(true)
+        sendRequest(userId,chatroomId)}} >SEND REQUEST</button>   }
     
     </div>
   );

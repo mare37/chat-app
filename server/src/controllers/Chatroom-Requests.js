@@ -10,7 +10,7 @@ const createChatRoomRequest = (req,res)=>{
    const query1 =
    "INSERT INTO chatroom_requests (fk_chat_room_chat_room_id,fk_users_users_id) VALUES (?,?)";
 
-   db.query(query1,[chatroomId.chatroom_id,userid], (err,result)=>{
+   db.query(query1,[chatroomId,userid], (err,result)=>{
     if(err){
         console.log(err);
     }
@@ -57,7 +57,30 @@ const getChatroomRequest = (req,res)=>{
 }
 
 
+//for a specific group
+const  getChatRoomRequests = (req,res)=>{
+
+    const {chatroomId  } =req.params;
+     
+    const query = "SELECT * FROM chatroom_requests WHERE fk_chat_room_chat_room_id = ?"
+
+    db.query(query,[chatroomId],(err,result)=>{
+        if(err){
+            console.log(err);
+            res.send("Failed")
+        }
+        res.send(result)
+       
+    })
+   
+   
+   
+    
+
+}
 
 
 
-module.exports = {createChatRoomRequest, getChatroomRequest}
+
+
+module.exports = {createChatRoomRequest, getChatroomRequest, getChatRoomRequests }

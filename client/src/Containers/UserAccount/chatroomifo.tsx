@@ -6,7 +6,7 @@ function ChatRoomInfo(props:any){
         <div>
             <div>{props.oneChatRoom}</div>
             <div>{`Number of Members: ${props.numberOfMembers}`}</div>
-            <div>Admins</div>
+            <div>{`Number of Requests: ${props.numberOfRequests}`}</div>
 
 
         </div>
@@ -15,4 +15,4 @@ function ChatRoomInfo(props:any){
 }
 
 
-export  default  ChatRoomInfo;
+export  default  ChatRoomInfo

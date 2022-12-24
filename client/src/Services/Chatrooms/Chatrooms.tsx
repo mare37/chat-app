@@ -29,4 +29,23 @@ const getUserChatRooms = async ( userId: number) => {
     }
 };
 
-export { getUserChatRooms };
+const getOneChatroom = async (id: number)=>{
+
+
+  try{
+    const response = await axios.get(`http://localhost:5000/api/chatroom_users/${id}`)
+
+    return response.data
+
+  }catch(err){
+    console.log(err);
+    
+  }
+
+ 
+
+
+
+}
+
+export { getUserChatRooms, getOneChatroom }

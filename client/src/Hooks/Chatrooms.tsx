@@ -1,5 +1,6 @@
 import { useState ,useContext} from "react";
-import { getUserChatRooms } from "../Services/Chatrooms/Chatrooms";
+import { getUserChatRooms ,getOneChatroom} from "../Services/Chatrooms/Chatrooms";
+import { getChatRoomRequests  } from "../Services/ChatroomRequests/ChatroomRequests"
 import axios from "axios";
 import { setSingleChatroom } from "../Redux/Chatrooms/SingleChatroomSlice";
 import { setChatroomId } from "../Redux/Chatroom_Requests/ChatRoomIdSlice";
@@ -42,13 +43,10 @@ const useGetUsersChatRooms = () => {
 
   //second function
 
-  const getChatRoomInfo = (id: number) => {
+  const getChatRoomInfo = async (id: number) => {
    
     //console.log(id);
     
-
-
-
     const oneChatRoom = myChatRooms.filter((item) => {
       
       
@@ -61,14 +59,37 @@ const useGetUsersChatRooms = () => {
       }
     });
 
+    const  response =  await getOneChatroom(id)
+     const numberOfRequests= await getChatRoomRequests(id);
+
+     console.log(numberOfRequests);
+     
+
+   
+    const arrayLength = response.data.length
+    console.log(arrayLength);
+
+    const chatroomInfo = {
+      chatroom_name: oneChatRoom[0].chatroom_name,
+      chatroom_id: oneChatRoom[0].chatroom_id,
+      chatroom_membersNo: arrayLength,
+      chatroom_requestNo: numberOfRequests
+    }
+    console.log(chatroomInfo);
+    
+
+    dispatch(setSingleChatroom( chatroomInfo )  );
+
+    
+
     //  let arrayLength = 0
 
-    axios
+  /*  axios
       .get(`http://localhost:5000/api/chatroom_users/${id}`)
       .then((response) => {
        // console.log(response.data.data.length);
 
-        const arrayLength = response.data.data.length;
+        const arrayLength = response.data.data.length
 
       //  console.log(response.data);
         
@@ -87,7 +108,7 @@ const useGetUsersChatRooms = () => {
         dispatch(setSingleChatroom( chatroomInfo )  )
 
       
-      });
+      });*/
 
    // console.log(oneChatRoom);
   };
