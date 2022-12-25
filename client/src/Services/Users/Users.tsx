@@ -10,10 +10,10 @@ const Login = async (email: any, password: any) => {
       email: email,
       password: password,
     });
-    console.log(response.data);
+   // console.log(response.data);
 
     if (response.data.auth) {
-      console.log("you are in");
+     // console.log("you are in");
       const user = {
         auth: true,
         user: {
@@ -24,7 +24,7 @@ const Login = async (email: any, password: any) => {
 
       return user;
     } else {
-      console.log("you are out");
+     // console.log("you are out");
       const user = {
         auth: false,
         user: {
@@ -46,8 +46,8 @@ const getLoginStatus = async () => {
   const response = await axios.get("http://localhost:5000/api/logInStatus");  
 
   try {
-    console.log(response.data.login);
-    console.log(response.data);
+   // console.log(response.data.login);
+  //  console.log(response.data);
 
     if (response.data.login) {
       console.log("you are in");

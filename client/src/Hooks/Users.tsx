@@ -24,7 +24,7 @@ const useLoginUser = (email: any, password: any) => {
     event.preventDefault();
 
     const response = await Login(email, password);
-    console.log(response);
+   // console.log(response);
 
     if (typeof response?.auth != "undefined") {
       switch (response.auth) {
@@ -34,7 +34,7 @@ const useLoginUser = (email: any, password: any) => {
           break;
 
         case false:
-          console.log("You are not logged in");
+         // console.log("You are not logged in");
           navigate("/login");
           break;
       }
@@ -67,11 +67,11 @@ const useGetLoginStatus = () =>{
   const [userName, setUserName] = useState(user);
  
   const getLogin = async () => {
-    console.log("getting login");
+   
 
     const response = await getLoginStatus();
 
-    console.log(response);
+   // console.log(response);
     if (typeof response?.isLoggedIn != "undefined") {
       switch (response.isLoggedIn) {
         case true:
@@ -81,7 +81,7 @@ const useGetLoginStatus = () =>{
           break;
 
         case false:
-          console.log("You are not logged in");
+         // console.log("You are not logged in");
           navigate(`/login`);
           break;
       }

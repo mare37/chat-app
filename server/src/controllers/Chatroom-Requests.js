@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const addUser = require("../utils/addUser");
 
 const createChatRoomRequest = (req,res)=>{
 
@@ -82,7 +83,35 @@ const  getChatRoomRequests = (req,res)=>{
 }
 
 
+const acceptRequest = (req, res)=>{
+
+    const {userId, chatroomId } = req.params;
+
+    const query = `DELETE FROM chatroom_requests WHERE fk_chat_room_chat_room_id = ? 
+                   AND fk_users_users_id = ?`
+
+    db.query(query, [chatroomId, userId], async (err, result)=>{
+        if(err){
+            console.log(err);
+        }
+
+      
+        if (result) {
+            const response = await addUser( userId, chatroomId)
+            res.send(response)
+        }
+      
+    })               
+      
+
+
+   
+   
+
+}
 
 
 
-module.exports = {createChatRoomRequest, getChatroomRequest, getChatRoomRequests }
+
+
+module.exports = {createChatRoomRequest, getChatroomRequest, getChatRoomRequests , acceptRequest  }

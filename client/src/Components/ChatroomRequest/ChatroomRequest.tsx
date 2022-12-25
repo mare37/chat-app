@@ -1,20 +1,21 @@
-import "./ChatroomRequest.css"
+import "./ChatroomRequest.css";
+import {acceptRequest  } from "../../Services/ChatroomRequests/ChatroomRequests"
 
 
-interface props{
-  username:string
+interface props {
+  userId:number
+  username: string;
+  chatroomId: number;
 }
 
-
-
-function ChatroomRequest({username}: props) {
+function ChatroomRequest({ username, chatroomId,userId }: props) {
   return (
     <div>
-      <p  className="name">{username}</p> <button>Accept</button> <button>Reject</button>
+      <p className="name">{username}</p>
+      <p className="name">{chatroomId}</p> <button onClick={()=>(acceptRequest(userId, chatroomId))} >Accept</button>
+      <button>Reject</button>
     </div>
   );
 }
-
-
 
 export default ChatroomRequest;

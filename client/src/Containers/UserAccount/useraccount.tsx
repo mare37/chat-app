@@ -52,7 +52,7 @@ function UserAccount() {
   const [chat, setChat] = useState<boolean | null>(false)
   const [sendRequest, setsendRequest] = useState<boolean | null>(null)
 
-    console.log(chat);
+  
     
 
   //Getting all my chat rooms in which this user account is the admin
@@ -80,7 +80,7 @@ function UserAccount() {
   useEffect(() => {
     setsendRequest(null)
     socket.on("room_joined_sucessfully", (data) => {
-        console.log(data);
+       // console.log(data);
         const  requestBooleanValue = {SendRequest : data[1], message: data[0]}
       
         dispatch(SetsendRequest(requestBooleanValue))

@@ -57,49 +57,39 @@ const checkRequest = async (userid: number, chatroomId: number)=>{
 
         })
         return response
-
-   
-        
-      
-        
-     
-  /*     const response2 =  await axios.get("http://localhost:5000/api/chat_rooms", {
-        params: { userId: userid },
-      });
-
-        console.log(response);
-       // console.log(response.data.request)
-        if(response.data.request === true){
-          return true
-        }else{
-          return false
-        } */
-   
-        
-     
-
-      
-
 }
 
 
 
 const getChatRoomRequests = async (chatroomId:number)=>{
 
-
-
-  console.log(chatroomId);
+ 
 
   const response = await axios.get(`http://localhost:5000/api/chatroom_requests/${chatroomId}`);
-  console.log(response);
+  //console.log(response);
   
 
-  console.log(response.data)
+ // console.log(response.data)
 
-  return response.data
-  
-  
+  return response.data;
 
+}
+
+
+
+const acceptRequest = async (userId:number, chatroomId:number)=>{
+
+     //  console.log(username);
+       console.log(chatroomId);
+
+        const response =  await axios.delete(`http://localhost:5000/api/chatroom_requests/${userId}/${chatroomId}` );
+
+        console.log(response);
+        
+
+
+       
+       
 
 }
 
@@ -108,4 +98,4 @@ const getChatRoomRequests = async (chatroomId:number)=>{
 
 
 
-export { sendRequest, checkRequest,getChatRoomRequests };
+export { sendRequest, checkRequest,getChatRoomRequests, acceptRequest };

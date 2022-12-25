@@ -37,7 +37,7 @@ const useGetUsersChatRooms = () => {
   const getChatrooms = async (userId: number)  => {
     const response = await getUserChatRooms(userId);
 
-    console.log(response);
+    //console.log(response);   
     setMyChatRooms(response);
   };
 
@@ -65,12 +65,12 @@ const useGetUsersChatRooms = () => {
 
      const numberOfRequests = data.length
 
-     console.log(data);
+     //console.log(data);
      
 
    
     const arrayLength = response.data.length
-    console.log(arrayLength);
+   // console.log(arrayLength);
 
     const chatroomInfo = {
       chatroom_name: oneChatRoom[0].chatroom_name,
@@ -78,7 +78,7 @@ const useGetUsersChatRooms = () => {
       chatroom_membersNo: arrayLength,
       chatroom_requestNo: numberOfRequests
     }
-    console.log(chatroomInfo);
+   // console.log(chatroomInfo);
     
     dispatch(  SetUserRequestArray( data ) ) 
     dispatch(setSingleChatroom( chatroomInfo )  );

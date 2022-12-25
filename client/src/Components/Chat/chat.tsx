@@ -53,7 +53,7 @@ function Chat ({username, chatroom_id}: Props ) {
   useEffect(() => {
       
     socket.on("room_joined_sucessfully", (data) => {
-        console.log(data);
+       // console.log(data);
         //setChat(data[1])
       
      // setRoomMessage(data);

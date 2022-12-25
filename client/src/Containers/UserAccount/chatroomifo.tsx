@@ -9,14 +9,14 @@ function ChatRoomInfo(props: any) {
     (state: RootState) => state.reducer.UserRequestsArray.object
   );
 
-  const [requests, setRequests]  = React.useState(false)
+  const [requests, setRequests]  = React.useState<boolean>(false)
 
   //console.log(array);
 
   const arraydata = array.map(( item, index)=>{
    // console.log(item['email']);
     
-        return <ChatroomRequest key={index} username={item["user_name"]}  />
+        return <ChatroomRequest key={index}  userId={item["user_id"]}   username={item["user_name"]} chatroomId={item["fk_chat_room_chat_room_id"]}  />
   })
 
   //console.log(arraydata);
