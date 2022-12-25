@@ -3,6 +3,7 @@ import { getUserChatRooms ,getOneChatroom} from "../Services/Chatrooms/Chatrooms
 import { getChatRoomRequests  } from "../Services/ChatroomRequests/ChatroomRequests"
 import axios from "axios";
 import { setSingleChatroom } from "../Redux/Chatrooms/SingleChatroomSlice";
+import { SetUserRequestArray } from "../Redux/Chatroom_Requests/UserRequestsArraySlice";
 import { setChatroomId } from "../Redux/Chatroom_Requests/ChatRoomIdSlice";
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -60,9 +61,11 @@ const useGetUsersChatRooms = () => {
     });
 
     const  response =  await getOneChatroom(id)
-     const numberOfRequests= await getChatRoomRequests(id);
+     const   data  = await getChatRoomRequests(id);
 
-     console.log(numberOfRequests);
+     const numberOfRequests = data.length
+
+     console.log(data);
      
 
    
@@ -77,7 +80,7 @@ const useGetUsersChatRooms = () => {
     }
     console.log(chatroomInfo);
     
-
+    dispatch(  SetUserRequestArray( data ) ) 
     dispatch(setSingleChatroom( chatroomInfo )  );
 
     

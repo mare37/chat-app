@@ -91,10 +91,12 @@ const getChatRoomRequests = async (chatroomId:number)=>{
   console.log(chatroomId);
 
   const response = await axios.get(`http://localhost:5000/api/chatroom_requests/${chatroomId}`);
+  console.log(response);
+  
 
   console.log(response.data)
 
-  return response.data.length
+  return response.data
   
   
 

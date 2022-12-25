@@ -7,13 +7,15 @@ import userReducer from "./usernameSlice"
 import  singlechatroomReducer from "./Redux/Chatrooms/SingleChatroomSlice"
 import chatroomIdReducer from "./Redux/Chatroom_Requests/ChatRoomIdSlice"
 import sendRequestReducer from "./Redux/Chatroom_Requests/SetRequestSlice"
+import UserRequestsReducer from "./Redux/Chatroom_Requests/UserRequestsArraySlice"
 
 
 const rootReduce = combineReducers({
   user: userReducer,
   singlechatroom: singlechatroomReducer,
   chatroomId: chatroomIdReducer,
-  sendRequest: sendRequestReducer
+  sendRequest: sendRequestReducer,
+  UserRequestsArray: UserRequestsReducer 
 })
 
 
