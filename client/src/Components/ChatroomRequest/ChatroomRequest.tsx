@@ -1,5 +1,5 @@
 import "./ChatroomRequest.css";
-import {acceptRequest  } from "../../Services/ChatroomRequests/ChatroomRequests"
+import {acceptRequest, rejectRequest  } from "../../Services/ChatroomRequests/ChatroomRequests"
 
 
 interface props {
@@ -13,7 +13,7 @@ function ChatroomRequest({ username, chatroomId,userId }: props) {
     <div>
       <p className="name">{username}</p>
       <p className="name">{chatroomId}</p> <button onClick={()=>(acceptRequest(userId, chatroomId))} >Accept</button>
-      <button>Reject</button>
+      <button  onClick={()=>{rejectRequest(userId, chatroomId)}}      >Reject</button>
     </div>
   );
 }

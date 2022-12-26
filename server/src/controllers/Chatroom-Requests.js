@@ -112,6 +112,26 @@ const acceptRequest = (req, res)=>{
 
 
 
+const  rejectRequest = (req,res)=>{
+
+    const {userId, chatroomId } = req.params;
+
+    const query = `DELETE FROM chatroom_requests WHERE fk_chat_room_chat_room_id = ? 
+                   AND fk_users_users_id = ?`
+
+    db.query(query, [chatroomId, userId], async (err, result)=>{
+        if(err){
+            console.log(err);
+        }
+
+        res.send(result)
+      
+    })               
+
+}
 
 
-module.exports = {createChatRoomRequest, getChatroomRequest, getChatRoomRequests , acceptRequest  }
+
+
+
+module.exports = {createChatRoomRequest, getChatroomRequest, getChatRoomRequests , acceptRequest,  rejectRequest  }

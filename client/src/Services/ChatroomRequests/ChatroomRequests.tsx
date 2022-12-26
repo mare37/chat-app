@@ -84,12 +84,19 @@ const acceptRequest = async (userId:number, chatroomId:number)=>{
 
         const response =  await axios.delete(`http://localhost:5000/api/chatroom_requests/${userId}/${chatroomId}` );
 
-        console.log(response);
-        
+        console.log(response);    
+
+}
 
 
-       
-       
+const rejectRequest = async (userId:number, chatroomId:number)=>{
+
+  console.log(userId);
+
+  const response =  await axios.delete(`http://localhost:5000/api/chatroom_requests/${userId}/${chatroomId}/reject` );
+
+  console.log(response);    
+  
 
 }
 
@@ -98,4 +105,4 @@ const acceptRequest = async (userId:number, chatroomId:number)=>{
 
 
 
-export { sendRequest, checkRequest,getChatRoomRequests, acceptRequest };
+export { sendRequest, checkRequest,getChatRoomRequests, acceptRequest,rejectRequest   };

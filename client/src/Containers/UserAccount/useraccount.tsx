@@ -16,6 +16,9 @@ import {
   useGetUsersChatRooms,
   useGetSearchedChatRooms,
 } from "../../Hooks/Chatrooms";
+
+import { useMyChatrooms } from "../../Hooks/ChatroomUsers";
+
 import { SocketContext } from "../../context";
 
 axios.defaults.withCredentials = true;
@@ -34,9 +37,7 @@ function UserAccount() {
     (state: RootState) => state.reducer.singlechatroom.object
   );
 
-  const sedRequest = useSelector((state:RootState)=>{
-    return state.reducer.sendRequest.object.SendRequest
-  })
+ 
 
   //console.log(singleChatroom);
 
@@ -47,10 +48,13 @@ function UserAccount() {
   const { joinChatRoom,     getSeachedChartRooms, searchItems, setSearchItems } =
     useGetSearchedChatRooms();
 
+  const { joinedChatrooms, joinedRooms }  = useMyChatrooms();
+
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
   const [chat, setChat] = useState<boolean | null>(false)
   const [sendRequest, setsendRequest] = useState<boolean | null>(null)
+  const[chatroomInfo, setChatRoomInfo] = useState(false)
 
   
     
@@ -63,6 +67,7 @@ function UserAccount() {
     //dispatch(SetsendRequest(requestBooleanValue))
 
     getChatrooms(user.userid);
+    joinedChatrooms();
 
   }, []);
 
@@ -98,7 +103,7 @@ function UserAccount() {
   //one member when clicked
   let myChatRoomsData = myChatRooms.map((chatRoom, index) => {
     return (
-      <h3
+      <p
         onClick={() => {
           // console.log(chatRoom.chatroom_id);
          
@@ -109,6 +114,7 @@ function UserAccount() {
        //  dispatch(SetsendRequest(requestBooleanValue))
           setsendRequest(null)
           setChat(true)
+          setChatRoomInfo(true)
           
           //joinChatRoom(chatRoom.chatroom_id);
         
@@ -116,9 +122,27 @@ function UserAccount() {
         key={index}
       >
         {chatRoom.chatroom_name}
-      </h3>
+      </p>
     );
   });
+
+
+  const joinedRoomsdata = joinedRooms.map((item, index)=>{
+    if(item.fk_admin_users_user_id !== user.userid){
+      return <p>{item.chatroom_name}</p>
+    }
+   
+  })
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div onClick={()=>{setQuery("")}}>
@@ -164,9 +188,13 @@ function UserAccount() {
 
       <div className="useraccount-body">
         <section className="mygroups-section">
-          <h1>My chat rooms</h1>
+          <h3>Chatrooms you manage</h3>
 
           {myChatRoomsData}
+
+          <h3>Chatrooms you've joined</h3>
+
+          {joinedRoomsdata}
         </section>
         <section className="chat-section">
 
@@ -177,7 +205,7 @@ function UserAccount() {
 
 
         </section>
-        <section className="chatroom-info">
+        {chatroomInfo?     <section className="chatroom-info">
           <ChatRoomInfo
             oneChatRoom={singleChatroom.chatroom_name}
             numberOfMembers={singleChatroom.chatroom_membersNo}
@@ -185,7 +213,9 @@ function UserAccount() {
           />
 
          
-        </section>
+        </section>: ""}          
+        
+    
       </div>
     </div>
   );
