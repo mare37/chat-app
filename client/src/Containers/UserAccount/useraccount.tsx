@@ -48,7 +48,7 @@ function UserAccount() {
   const { joinChatRoom,     getSeachedChartRooms, searchItems, setSearchItems } =
     useGetSearchedChatRooms();
 
-  const { joinedChatrooms, joinedRooms }  = useMyChatrooms();
+  const { joinedChatrooms, joinedRooms,  joinAchatroom  }  = useMyChatrooms();
 
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
@@ -66,7 +66,7 @@ function UserAccount() {
       
     //dispatch(SetsendRequest(requestBooleanValue))
 
-    getChatrooms(user.userid);
+    getChatrooms(user.userid)
     joinedChatrooms();
 
   }, []);
@@ -85,7 +85,7 @@ function UserAccount() {
   useEffect(() => {
     setsendRequest(null)
     socket.on("room_joined_sucessfully", (data) => {
-       // console.log(data);
+        console.log(data);
         const  requestBooleanValue = {SendRequest : data[1], message: data[0]}
       
         dispatch(SetsendRequest(requestBooleanValue))
@@ -129,7 +129,11 @@ function UserAccount() {
 
   const joinedRoomsdata = joinedRooms.map((item, index)=>{
     if(item.fk_admin_users_user_id !== user.userid){
-      return <p>{item.chatroom_name}</p>
+      return <p key={index} onClick={()=>{
+              joinAchatroom(item.chatroom_id)
+              setChat(true)
+              setChatRoomInfo(false)
+      }}   >{item.chatroom_name}</p>
     }
    
   })

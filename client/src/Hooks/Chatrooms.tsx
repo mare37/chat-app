@@ -35,7 +35,7 @@ const useGetUsersChatRooms = () => {
 
   //first function
   const getChatrooms = async (userId: number)  => {
-    const response = await getUserChatRooms(userId);
+    const response = await getUserChatRooms(userId)
 
     //console.log(response);   
     setMyChatRooms(response);
