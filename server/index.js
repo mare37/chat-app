@@ -54,6 +54,9 @@ io.on("connection", (socket) => {
       console.log(err);
     }
 
+    console.log(data.currentRoom);
+    socket.leave(data.currentRoom)
+
    //console.log(data);
       
     //function returns a boolean
@@ -70,9 +73,10 @@ io.on("connection", (socket) => {
     if(result === true){
      // console.log(data)
       socket.join(data.room);
+      let currentRoom = data.room
       socket.emit(
         "room_joined_sucessfully",
-       [`${data.firstName} you have joined room ${data.room}`, true]
+       [`${data.firstName} you have joined room ${data.room}`, true,  currentRoom]
       );   
     }
     if(result === false){
@@ -117,7 +121,7 @@ io.on("connection", (socket) => {
 
     
     console.log(`User disconnected ${socket.id}`);
-    socket.disconnect(true);
+   // socket.disconnect(true);
   });
 });
 

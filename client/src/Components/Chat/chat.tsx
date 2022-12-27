@@ -20,22 +20,24 @@ function Chat ({username, chatroom_id}: Props ) {
     (state: RootState) => state.reducer.singlechatroom.object
   );
   const user = useSelector((state: RootState) => state.reducer.user.object);
+  const currentRoom = useSelector((state: RootState) => state.reducer.sendRequest.object.currentRoom);
 
 
 
 
-  const [message, setMessage] = useState<string[]>([""]);
+  const [message, setMessage] = useState<string[]>([]);
   const [messageToBeSent, setmessageToBeSent] = useState<string>("");
   const [roomMessage, setRoomMessage] = useState<string>("");
  
 
 
-  const joinRoom = async () => {
+  const joinRoom = async (currentroom:number) => {
     
     await socket.emit("join_room", { 
       room: singleChatroom.chatroom_id,
       firstName: user.username,
-      userId: user.userid
+      userId: user.userid,
+      currentRoom:currentroom
       
     });
    
@@ -45,8 +47,10 @@ function Chat ({username, chatroom_id}: Props ) {
   
 
   useEffect(() => {
-   
-    joinRoom();
+    console.log("Chat rendered");
+    
+    setMessage([""])
+    joinRoom(currentRoom);
   }, [singleChatroom.chatroom_id]);
 
 
@@ -66,9 +70,9 @@ function Chat ({username, chatroom_id}: Props ) {
   const sendMessage = async () => {
     if (messageToBeSent.length > 0) {
       await socket.emit("send_message", {
-        room: chatroom_id,
+        room: singleChatroom.chatroom_id,
         messageToBeSent: messageToBeSent,
-        authorFirstName: username,
+        authorFirstName: user.username,
         
       });
     } else {

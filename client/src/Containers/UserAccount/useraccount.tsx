@@ -85,8 +85,11 @@ function UserAccount() {
   useEffect(() => {
     setsendRequest(null)
     socket.on("room_joined_sucessfully", (data) => {
-        console.log(data);
-        const  requestBooleanValue = {SendRequest : data[1], message: data[0]}
+      //  console.log(data);
+        const  requestBooleanValue = {SendRequest : data[1], message: data[0],currentRoom:data[2]}
+
+        console.log( requestBooleanValue);
+        
       
         dispatch(SetsendRequest(requestBooleanValue))
        
@@ -106,7 +109,7 @@ function UserAccount() {
       <p
         onClick={() => {
           // console.log(chatRoom.chatroom_id);
-         
+          setChat(false)
           getChatRoomInfo(chatRoom.chatroom_id);
 
           let  requestBooleanValue = {SendRequest : true}

@@ -7,7 +7,7 @@ const SendRequest : x = null;
 
 const SendRequestSlice = createSlice({
     name: "SendRequestSlice ",
-    initialState:{object: {SendRequest :true,message:"" } },
+    initialState:{object: {SendRequest :true,message:"",currentRoom:0 } },
     reducers:{
         SetsendRequest:(state ,action)=>{ 
        // const user = action.payload
