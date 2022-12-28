@@ -4,6 +4,7 @@ import "./chat.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import  {SocketContext} from "../../context"
+import { postOneMessage } from "../../Services/Messages/Messages";
 
 
 
@@ -27,6 +28,7 @@ function Chat ({username, chatroom_id}: Props ) {
 
   const [message, setMessage] = useState<string[]>([]);
   const [messageToBeSent, setmessageToBeSent] = useState<string>("");
+   
   const [roomMessage, setRoomMessage] = useState<string>("");
  
 
@@ -68,53 +70,77 @@ function Chat ({username, chatroom_id}: Props ) {
 
   //send message
   const sendMessage = async () => {
-    if (messageToBeSent.length > 0) {
-      await socket.emit("send_message", {
-        room: singleChatroom.chatroom_id,
-        messageToBeSent: messageToBeSent,
-        authorFirstName: user.username,
+        console.log("sendmessage called");
+        setMessage([""])
         
-      });
-    } else {
-      console.log("You havent typed anything");
-    }
+      if (messageToBeSent.length > 0) {
+
+        postOneMessage(messageToBeSent,singleChatroom.chatroom_id,user.userid).then(()=>{
+            socket.emit("send_message", {
+            room: singleChatroom.chatroom_id,
+            messageToBeSent: messageToBeSent,
+            authorFirstName: user.username,
+            userId: user.userid
+            
+          });
+        })
+
+
+
+      
+      } else {
+        console.log("You havent typed anything");
+      }
+    
+
+  
   };
 
   useEffect(() => {
     socket.on("received_message", (data) => {
-      console.log(data);
+    //  console.log(data);
+    
+      setMessage(data)
 
-      setMessage((prev) => {
+    /*  setMessage((prev) => {
         return [...prev, data];
-      });
+      });*/
     });
   }, [socket]);
 
-  const allMessages: any = message
-    .slice(0)
-    .reverse()
-    .map((item, index) => {
-      return (
-        <div
-        key={index}
-          className={
-            username === item[0] 
-              ? "text-message active"
-              : "text-message"
-          }
-        >
-          <p className={username === item[0]
+  console.log(message);
+  
+  let  allMessages: any
+ 
+ allMessages = message
+  .slice(0)
+  .reverse()
+  .map((item:any, index:number) => {
+    return (
+      <div
+      key={index}
+      className={
+        username ===item.user_name 
+          ? "text-message active"
+          : "text-message"
+      }
+
+
+      >
+        <p className={username === item.user_name
               ? "text-paragraph"
-              : "text-paragraph active" }   key={index}>{item[2]}</p>
-        </div>
-      );
-    });
+              : "text-paragraph active" }            key={index}>{item.message_text}</p>
+      </div>
+    );
+  });
+ 
 
   
 
 
   return (
     <div className="Chat">
+      <div>{singleChatroom.chatroom_name}</div>
       <div className="chat-area">{allMessages}</div>
       <div className="input-section">
         <input

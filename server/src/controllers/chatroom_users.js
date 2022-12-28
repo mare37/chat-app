@@ -23,7 +23,7 @@ const  getJoinedChatrooms = (req,res)=>{
 
     const{userId} = req.params
 
-    const query = `SELECT * FROM chat_roomusers JOIN chat_room ON  
+    const query = `SELECT * FROM chat_roomusers JOIN chat_room ON   
                    fk_chat_room_chat_room_id = chatroom_id 
                    WHERE fk_users_users_id = ?`
 
