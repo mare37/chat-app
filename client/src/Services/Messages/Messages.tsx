@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const postOneMessage = async (message:string,chatroomId:number,userId:number)=>{
-    console.log(message);
+   // console.log(message);
 
  const response = await  axios.post("http://localhost:5000/api/messages", {
         message: message,
@@ -10,12 +10,18 @@ const postOneMessage = async (message:string,chatroomId:number,userId:number)=>{
         userId:userId
     })
 
-    console.log(response);
-    
+   // console.log(response);
 
-
-    
 
 }
 
-export {postOneMessage}
+
+const  getOneChatroomMessages = async (chatroomId:number)=>{
+
+    const response = await axios.get(`http://localhost:5000/api/messages/${chatroomId}`)
+
+    return response
+
+}
+
+export {postOneMessage,getOneChatroomMessages  }

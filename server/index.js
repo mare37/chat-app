@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
       console.log(err);
     }
 
-    console.log(data.currentRoom);
+    //console.log(data.currentRoom);
     socket.leave(data.currentRoom)
 
    //console.log(data);
@@ -108,6 +108,7 @@ io.on("connection", (socket) => {
 
     getMessages(data.room,data.userId).then((response)=>{
       console.log(response);
+      console.log(response.length);
 
       socket.emit("received_message", response);
       socket.to(data.room).emit("received_message", response);

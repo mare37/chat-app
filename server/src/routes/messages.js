@@ -4,7 +4,7 @@ const db = require("../config/database");
 const cors = require("cors");
 var cookieParser = require('cookie-parser')
 
-const { postOneMessage } = require("../controllers/messages");
+const { postOneMessage, getOneChatroomMessages } = require("../controllers/messages");
 const validate = require("../middleware/auth");
 
 router.use(cors({ origin: true, credentials: true }));
@@ -14,6 +14,7 @@ router.use(cookieParser())
 
 
 router.post("/", postOneMessage);
+router.get("/:chatroomId", getOneChatroomMessages)
 
 
 
