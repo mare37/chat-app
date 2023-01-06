@@ -27,7 +27,7 @@ const getOneChatroomMessages = (req,res)=>{
    const {chatroomId} = req.params
 
    const query =  `SELECT * FROM messages JOIN users ON fk_users_user_id = user_id
-                   JOIN chat_room ON fk_chat_room_chatroom_id = chatroom_id
+                   JOIN chatroom ON fk_chat_room_chatroom_id = chatroom_id
                    WHERE fk_chat_room_chatroom_id = ? ORDER BY message_id`   
 
    db.query(query,[chatroomId],(err,result)=>{

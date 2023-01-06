@@ -128,4 +128,20 @@ const logInStatus = (req,res)=>{
 
 }
 
-module.exports = { registerUser, logIn, logOut, logInStatus   };
+const getAllusers= (req,res)=>{
+
+
+  const query = "SELECT * FROM users"
+
+  db.query(query,(err,result)=>{
+    if(err){
+      console.log(err);
+      return
+    }
+    res.send(result)
+  })
+
+  
+}
+
+module.exports = { registerUser, logIn, logOut, logInStatus,getAllusers   };

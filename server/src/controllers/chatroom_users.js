@@ -5,7 +5,7 @@ const getAllMembers = (req, res) => {
   // console.log(id );
 
   const query =
-    "SELECT * FROM chat_roomusers WHERE fk_chat_room_chat_room_id = ?";
+    "SELECT * FROM chatroom_users WHERE fk_chat_room_chat_room_id = ?";
 
   db.query(query, [id.chatroomId], (err, result) => {
     if (err) {
@@ -23,7 +23,7 @@ const  getJoinedChatrooms = (req,res)=>{
 
     const{userId} = req.params
 
-    const query = `SELECT * FROM chat_roomusers JOIN chat_room ON   
+    const query = `SELECT * FROM chatroom_users JOIN chatroom ON   
                    fk_chat_room_chat_room_id = chatroom_id 
                    WHERE fk_users_users_id = ?`
 

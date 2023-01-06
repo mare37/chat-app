@@ -6,9 +6,9 @@ const createChatRoom = (req, res) => {
   console.log(chatroomName);
 
   const query1 =
-    "INSERT INTO chat_room (chatroom_name,fk_topic_categories_topic_category_id,fk_admin_users_user_id) VALUES (?,?,?)";
+    "INSERT INTO chatroom (chatroom_name,fk_topic_categories_topic_category_id,fk_admin_users_user_id) VALUES (?,?,?)";
 
-  const query2 = "INSERT INTO chat_roomusers (fk_chat_room_chat_room_id, fk_users_users_id ) VALUES (?,?)"
+  const query2 = "INSERT INTO chatroom_users (fk_chat_room_chat_room_id, fk_users_users_id ) VALUES (?,?)"
 
     db.query(query1, [chatroomName, category_id, user_id ], (err,response)=>{
         if(err){
@@ -43,7 +43,7 @@ const getAllChatRooms =(req,res)=>{
     const user_id = req.query.userId;
 
     if(user_id !== undefined){
-        const query = "SELECT * FROM chat_room WHERE fk_admin_users_user_id = (?)"
+        const query = "SELECT * FROM chatroom WHERE fk_admin_users_user_id = (?)"
 
         db.query(query,[user_id],(err,result)=>{
             if(err){
@@ -58,7 +58,7 @@ const getAllChatRooms =(req,res)=>{
         })
 
     }else{
-        const query = "SELECT *FROM chat_room";
+        const query = "SELECT *FROM chatroom";
 
         db.query(query,(err,result)=>{
             if(err){

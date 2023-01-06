@@ -64,5 +64,23 @@ const getLoginStatus = async () => {
 };
 
 
+const getAllusers= async ()=>{
 
-export { Login, getLoginStatus};
+  try{
+
+    const response = await axios.get("http://localhost:5000/api/getallusers")
+
+    return response.data
+
+  }catch(err){
+    console.log(err);
+    
+
+  }
+
+
+}
+
+
+
+export { Login, getLoginStatus, getAllusers};

@@ -6,7 +6,7 @@ function addUser(userId, chatroomId){
 
 
 
-    const query = `INSERT INTO chat_roomusers (fk_chat_room_chat_room_id,fk_users_users_id) 
+    const query = `INSERT INTO chatroom_users (fk_chat_room_chat_room_id,fk_users_users_id) 
                    VALUES (?,?)`
 
     const response = new Promise((resolve,reject)=>{

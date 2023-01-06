@@ -5,7 +5,7 @@ import { setUser } from "../usernameSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-import { Login, getLoginStatus } from "../Services/Users/Users";
+import { Login, getLoginStatus , getAllusers} from "../Services/Users/Users";
 
 axios.defaults.withCredentials = true;
 
@@ -93,4 +93,49 @@ const useGetLoginStatus = () =>{
   
   } 
 
-export {useLoginUser , useGetLoginStatus };
+
+
+
+ const  useSearchedUsers =()=>{
+  const [searchedUsers, setSearchedUsers] = useState([]);
+
+  const getSearchedUsers = async (query:any)=>{
+
+
+    try{
+      const response =  await getAllusers();
+      console.log(response);
+
+      let data = response.filter((item: any) => {
+        return item.user_name.toLowerCase().includes(query)
+      });
+
+      let data2 = data.map((item: any, key: number) => {
+        return <p  key={key}>{item.user_name}</p>;
+      });
+      setSearchedUsers(data2)
+      
+
+    }catch(err){
+      console.log(err);
+      
+    }
+
+    
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+       return{getSearchedUsers,searchedUsers,  setSearchedUsers  }
+ }
+
+export {useLoginUser , useGetLoginStatus,useSearchedUsers  };

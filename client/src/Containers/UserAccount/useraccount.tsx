@@ -17,6 +17,8 @@ import {
   useGetSearchedChatRooms,
 } from "../../Hooks/Chatrooms";
 
+import {useSearchedUsers} from "../../Hooks/Users"
+
 import { useMyChatrooms } from "../../Hooks/ChatroomUsers";
 
 import { SocketContext } from "../../context";
@@ -50,6 +52,8 @@ function UserAccount() {
 
   const { joinedChatrooms, joinedRooms,  joinAchatroom  }  = useMyChatrooms();
 
+  const{ getSearchedUsers, searchedUsers } = useSearchedUsers();
+
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
   const [chat, setChat] = useState<boolean | null>(false)
@@ -77,6 +81,7 @@ function UserAccount() {
   useEffect(() => {
     if (query.length >= 1) {
       getSeachedChartRooms(query);
+      getSearchedUsers(query);
     } else {
       setSearchItems([]);
     }
@@ -184,12 +189,13 @@ function UserAccount() {
 
         <div
           className={
-            query.length >= 1
+           ( query.length >= 1 || searchItems.length > 0
               ? "search-result-container" 
-              : "search-result-container active"
+              : "search-result-container active") 
           }
         >
           {searchItems}
+          {searchedUsers}
         </div>
       </div>
 
