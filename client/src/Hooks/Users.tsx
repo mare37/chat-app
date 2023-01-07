@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { setUser } from "../usernameSlice";
+import { setSearchedFriend } from "../Redux/Friends/FriendSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import { Login, getLoginStatus , getAllusers} from "../Services/Users/Users";
+import { findFriend } from "../Services/Friends/Friends";
 
 axios.defaults.withCredentials = true;
 
@@ -98,6 +100,38 @@ const useGetLoginStatus = () =>{
 
  const  useSearchedUsers =()=>{
   const [searchedUsers, setSearchedUsers] = useState([]);
+  const [friendship, setfriendship] = useState<boolean | null>(null);
+  const myUserId = useSelector((state: RootState) => state.reducer.user.object.userid);
+   const dispatch = useDispatch()
+  //function definition
+    const connectWithFriend = async (myUserId:number, friendsUserId:number, friendsUserName:string)=>{
+
+      if(myUserId !== friendsUserId){
+        
+        const friend ={
+          user_id:friendsUserId,
+          user_name:friendsUserName
+         }
+         dispatch(setSearchedFriend(friend));
+  
+      //  find out if they are friends
+          const friendshipStatus = await  findFriend(myUserId,friendsUserId);
+  
+          if( typeof friendshipStatus !== "undefined"){
+            setfriendship(friendshipStatus)
+          }
+
+      }
+
+    
+       
+
+        
+
+
+    }
+
+
 
   const getSearchedUsers = async (query:any)=>{
 
@@ -111,7 +145,7 @@ const useGetLoginStatus = () =>{
       });
 
       let data2 = data.map((item: any, key: number) => {
-        return <p  key={key}>{item.user_name}</p>;
+        return <p  key={key}  onClick={()=>{connectWithFriend(myUserId,item.user_id,item.user_name)}}>{item.user_name}</p>;
       });
       setSearchedUsers(data2)
       
@@ -135,7 +169,7 @@ const useGetLoginStatus = () =>{
 
 
 
-       return{getSearchedUsers,searchedUsers,  setSearchedUsers  }
+       return{getSearchedUsers,searchedUsers,  setSearchedUsers ,friendship,   setfriendship }
  }
 
 export {useLoginUser , useGetLoginStatus,useSearchedUsers  };

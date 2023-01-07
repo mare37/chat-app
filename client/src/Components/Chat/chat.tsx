@@ -96,6 +96,12 @@ function Chat({ username, chatroom_id }: Props) {
         console.log(messageInputElement);
       }
     } else {
+      socket.emit("send_message", {
+        room: singleChatroom.chatroom_id,
+        messageToBeSent: messageToBeSent,
+        authorFirstName: user.username,
+        userId: user.userid,
+      });
       console.log("You havent typed anything");
     }
   };

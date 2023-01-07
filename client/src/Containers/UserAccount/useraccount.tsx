@@ -11,6 +11,8 @@ import ChatRoomInfo from "./chatroomifo";
 import * as React from "react";
 import SendRequest from "../../Components/SendRequest/SendRequest";
 import Welcome from "../../Components/WelcomeToChat/Welcome";
+import PrivateMessage from "../../Components/PrivateMessage/PrivateMessage";
+import SendFriendRequest from "../../Components/SendFriendRequest/SendFriendRequest";
 //importing chatroom hooks
 import {
   useGetUsersChatRooms,
@@ -39,6 +41,8 @@ function UserAccount() {
     (state: RootState) => state.reducer.singlechatroom.object
   );
 
+  const friend = useSelector((state:RootState)=> state.reducer.SearchedFriend.object)
+
  
 
   //console.log(singleChatroom);
@@ -52,7 +56,7 @@ function UserAccount() {
 
   const { joinedChatrooms, joinedRooms,  joinAchatroom  }  = useMyChatrooms();
 
-  const{ getSearchedUsers, searchedUsers } = useSearchedUsers();
+  const{ getSearchedUsers, searchedUsers, friendship,  setfriendship  } = useSearchedUsers();
 
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
@@ -123,7 +127,7 @@ function UserAccount() {
           setsendRequest(null)
           setChat(true)
           setChatRoomInfo(true)
-          
+          setfriendship(null)
           //joinChatRoom(chatRoom.chatroom_id);
         
         }}
@@ -134,21 +138,45 @@ function UserAccount() {
     );
   });
 
-
   const joinedRoomsdata = joinedRooms.map((item, index)=>{
     if(item.fk_admin_users_user_id !== user.userid){
       return <p key={index} onClick={()=>{
               joinAchatroom(item.chatroom_id)
               setChat(true)
               setChatRoomInfo(false)
+              setfriendship(null)
       }}   >{item.chatroom_name}</p>
     }
    
   })
 
+    let MidSectionComponent;
+
+   if(friendship){
+    MidSectionComponent = <PrivateMessage/>
+   }else if(friendship === false){
+    MidSectionComponent = <SendFriendRequest  name={friend.user_name}   />
+   }else{
+    if(sendRequest === false){
+      MidSectionComponent =  <SendRequest/>
+    }else{
+            if(chat === false || null){
+
+              MidSectionComponent = <Welcome/>
+            }else{
+              MidSectionComponent = <Chat username={user.username}
+              chatroom_id={singleChatroom.chatroom_id}  />
+            }
+
+    }
+
+   }
+
+   
 
 
 
+   
 
 
 
@@ -212,9 +240,7 @@ function UserAccount() {
         <section className="chat-section">
 
 
-        {sendRequest === false ? <SendRequest/> : ( chat === false || null?                
-                <Welcome/>   :   <Chat username={user.username}
-           chatroom_id={singleChatroom.chatroom_id}  />       )}
+        {MidSectionComponent}
 
 
         </section>
