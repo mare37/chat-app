@@ -25,6 +25,7 @@ const chatroomUsersRoute = require("./src/routes/chatroom_users");
 const chatroomRequestRoute =  require("./src/routes/Chatroom-Requests")
 const messagesRoute = require("./src/routes/messages");
 const friendsRoute = require("./src/routes/Friends");
+const friendRequestRoute = require("./src/routes/FriendRequests");
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -42,6 +43,7 @@ app.use("/api/chatroom_users",  chatroomUsersRoute)
 app.use("/api/chatroom_requests", chatroomRequestRoute );
 app.use("/api/messages", messagesRoute);
 app.use("/api/friends", friendsRoute);
+app.use("/api/friendrequests", friendRequestRoute);
 
 
 app.get("/", validate, (req, res) => {

@@ -65,7 +65,6 @@ function UserAccount() {
   const[chatroomInfo, setChatRoomInfo] = useState(false)
 
   
-    
 
   //Getting all my chat rooms in which this user account is the admin
   useEffect(() => {
@@ -107,6 +106,14 @@ function UserAccount() {
      // setRoomMessage(data);
     });
   }, [socket]);
+
+
+  useEffect(()=>{
+    if(friendship || !friendship){
+      setChatRoomInfo(false)
+    }
+    
+  },[friendship])
 
  
 
@@ -153,9 +160,12 @@ function UserAccount() {
     let MidSectionComponent;
 
    if(friendship){
+    //setChatRoomInfo(false)
     MidSectionComponent = <PrivateMessage/>
    }else if(friendship === false){
-    MidSectionComponent = <SendFriendRequest  name={friend.user_name}   />
+
+    MidSectionComponent = <SendFriendRequest  name={friend.user_name} 
+                                  friendSId={friend.user_id}  myUserId={user.userid} />
    }else{
     if(sendRequest === false){
       MidSectionComponent =  <SendRequest/>
