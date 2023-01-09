@@ -20,8 +20,10 @@ const sendFriendRequest = async (myUserId:number, friendUserId:number)=>{
 const getFriendRequest = async (myUserId:number, friendUserId:number)=>{
 
     const response = await axios.get(`http://localhost:5000/api/friendrequests/${myUserId}/${friendUserId}`);
-
-    return response.data.friendrequeststatus
+         
+  //  console.log(response.data);
+    
+    return response.data
 
 
 }

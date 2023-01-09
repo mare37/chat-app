@@ -138,7 +138,7 @@ const useGetLoginStatus = () =>{
 
     try{
       const response =  await getAllusers();
-      console.log(response);
+    //  console.log(response);
 
       let data = response.filter((item: any) => {
         return item.user_name.toLowerCase().includes(query)

@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
       
     //function returns a boolean
     const result = await JoinRoom(data.room, data.userId);
-    console.log(result);
+    //console.log(result);
 
   /* socket.join(data.room);
     socket.emit(

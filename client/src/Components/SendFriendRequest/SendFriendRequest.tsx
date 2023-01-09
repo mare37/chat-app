@@ -6,7 +6,9 @@ import { RootState } from "../../store";
 function SendFriendRequest(props: any){
 
     const friend = useSelector((state:RootState)=> state.reducer.SearchedFriend.object)
-    const [friendRequestStatus, setFriendRequestStatus] = useState(false);
+    const [friendRequestStatus, setFriendRequestStatus] = useState<boolean | null>(false);
+    const [friendResponseStatus, setFriendResponseStatus] = useState(false);
+
 
 
         useEffect(()=>{
@@ -14,10 +16,19 @@ function SendFriendRequest(props: any){
 
             const waitForData = async ()=>{
 
-                const response = await getFriendRequest(props.myUserId , props.friendSId)
+                try{
+                    const response = await getFriendRequest(props.myUserId , props.friendSId)
 
-                console.log(response);
-                setFriendRequestStatus(response)
+                    console.log(response);
+                    setFriendResponseStatus(response.respondToRequest)
+                    setFriendRequestStatus(response.friendrequeststatus)
+
+                }catch(err){
+                    console.log(err);
+                    
+                }
+
+               
                 
             }
 
@@ -25,9 +36,20 @@ function SendFriendRequest(props: any){
 
         },[friend])
   
-   
+       let requestOrResposponse;
 
+        if(friendResponseStatus === true && friendRequestStatus === null){
 
+            requestOrResposponse = <button>RESPOND TO REQUEST</button>
+            
+        }else{
+            if(friendRequestStatus){
+                requestOrResposponse = "FRIEND REQUEST SENT"
+            }else{
+                requestOrResposponse =  <button onClick={()=>{sendFriendRequest(props.myUserId, props.friendSId)}}>Send Friend Request</button>
+
+            }
+        }
 
 
 
@@ -39,7 +61,7 @@ function SendFriendRequest(props: any){
 
         <div>{props.name}</div>
 
-            {friendRequestStatus?  "FRIEND REQUEST SENT":  <button onClick={()=>{sendFriendRequest(props.myUserId, props.friendSId)}}>Send Friend Request</button> }
+            {requestOrResposponse}
            
           
 
