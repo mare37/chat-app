@@ -108,7 +108,7 @@ function Chat({ username, chatroom_id }: Props) {
 
   useEffect(() => {
     socket.on("received_message", (data) => {
-        console.log(data);
+      //  console.log(data);
 
       setMessage(data);
 
@@ -128,7 +128,7 @@ function Chat({ username, chatroom_id }: Props) {
     .slice(0)
     .reverse()
     .map((item: any, index: number) => {
-      console.log(item);
+     // console.log(item);
       
       return (
         <div

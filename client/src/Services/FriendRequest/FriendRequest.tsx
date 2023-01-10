@@ -30,6 +30,27 @@ const getFriendRequest = async (myUserId:number, friendUserId:number)=>{
 
 
 
+const acceptFriendRequest = async (myUserId:number, friendUserId:number)=>{
+
+    console.log(myUserId);
+    console.log(friendUserId);
+
+    const response = await axios.delete(`http://localhost:5000/api/friendrequests/${myUserId}/${friendUserId}/accept`)
+
+}
 
 
-export {sendFriendRequest, getFriendRequest}
+const rejectFriendRequest = async (myUserId:number, friendUserId:number)=>{
+
+    console.log(myUserId);
+    console.log(friendUserId);
+
+    const response = await axios.delete(`http://localhost:5000/api/friendrequests/${myUserId}/${friendUserId}`)
+
+}
+
+
+
+
+
+export {sendFriendRequest, getFriendRequest,rejectFriendRequest,  acceptFriendRequest  }

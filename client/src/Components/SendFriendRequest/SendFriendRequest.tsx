@@ -1,75 +1,75 @@
-import {useEffect,useState } from "react"
-import { sendFriendRequest,getFriendRequest } from "../../Services/FriendRequest/FriendRequest";
+import { useEffect, useState } from "react";
+import {
+  sendFriendRequest,
+  getFriendRequest,
+  rejectFriendRequest,  
+  acceptFriendRequest
+} from "../../Services/FriendRequest/FriendRequest";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
-function SendFriendRequest(props: any){
+function SendFriendRequest(props: any) {
 
-    const friend = useSelector((state:RootState)=> state.reducer.SearchedFriend.object)
-    const [friendRequestStatus, setFriendRequestStatus] = useState<boolean | null>(false);
-    const [friendResponseStatus, setFriendResponseStatus] = useState(false);
-
-
-
-        useEffect(()=>{
+  const friend = useSelector((state: RootState) => state.reducer.SearchedFriend.object );
+  const [friendRequestStatus, setFriendRequestStatus] = useState<boolean | null>(false);
+  const [friendResponseStatus, setFriendResponseStatus] = useState(false);
 
 
-            const waitForData = async ()=>{
 
-                try{
-                    const response = await getFriendRequest(props.myUserId , props.friendSId)
+  useEffect(() => {
+    const waitForData = async () => {
+      try {
+        const response = await getFriendRequest(
+          props.myUserId,
+          props.friendSId
+        );
 
-                    console.log(response);
-                    setFriendResponseStatus(response.respondToRequest)
-                    setFriendRequestStatus(response.friendrequeststatus)
+        console.log(response);
+        setFriendResponseStatus(response.respondToRequest);
+        setFriendRequestStatus(response.friendrequeststatus);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-                }catch(err){
-                    console.log(err);
-                    
-                }
-
-               
-                
-            }
-
-            waitForData();
-
-        },[friend])
-  
-       let requestOrResposponse;
-
-        if(friendResponseStatus === true && friendRequestStatus === null){
-
-            requestOrResposponse = <button>RESPOND TO REQUEST</button>
-            
-        }else{
-            if(friendRequestStatus){
-                requestOrResposponse = "FRIEND REQUEST SENT"
-            }else{
-                requestOrResposponse =  <button onClick={()=>{sendFriendRequest(props.myUserId, props.friendSId)}}>Send Friend Request</button>
-
-            }
-        }
+    waitForData();
+  }, [friend]);
 
 
 
 
+  let requestOrResponse;
 
+  if (friendResponseStatus === true && friendRequestStatus === null) {
+    requestOrResponse = (
+      <div>
+        <button   onClick={()=>{acceptFriendRequest(props.myUserId, props.friendSId)}}>ACCEPT</button>
+        <button  onClick={()=>{rejectFriendRequest(props.myUserId, props.friendSId)}}> REJECT</button>
+      </div>
+    );
+  } else {
+    if (friendRequestStatus) {
+      requestOrResponse = "FRIEND REQUEST SENT";
+    } else {
+      requestOrResponse = (
+        <button
+          onClick={() => {
+            sendFriendRequest(props.myUserId, props.friendSId);
+          }}
+        >
+          Send Friend Request
+        </button>
+      );
+    }
+  }
 
-    return(
-        <>
+  return (
+    <>
+      <div>{props.name}</div>
 
-        <div>{props.name}</div>
-
-            {requestOrResposponse}
-           
-          
-
-        </>
-    )
-
-
+      {requestOrResponse}
+    </>
+  );
 }
 
-
-export default  SendFriendRequest;
+export default SendFriendRequest;

@@ -13,12 +13,13 @@ const getUserChatRooms = async ( userId: number) => {
         setMyChatRooms(response.data);
       });*/
 
-  const response =  await axios.get("http://localhost:5000/api/chat_rooms", {
-    params: { userId: userId },
-  });
+ 
 
 
     try{
+      const response =  await axios.get("http://localhost:5000/api/chat_rooms", {
+        params: { userId: userId },
+      });
        // console.log(response);
 
         return response.data

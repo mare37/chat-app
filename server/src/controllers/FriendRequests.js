@@ -1,3 +1,4 @@
+
 const db = require("../../src/config/database");
 
 const sendFriendRequest = (req, res) => {
@@ -109,4 +110,66 @@ const getFriendRequest = (req, res) => {
 
 const friendRequestSent = (req, res) => {};
 
-module.exports = { sendFriendRequest, getFriendRequest };
+
+const rejectFriendRequest = (req,res)=>{
+
+    const {myuserId,friendUserId} = req.params
+
+    console.log("REJECT FRIEND");
+
+    const query = "DELETE FROM friend_requests WHERE fk_me_user_user_id = ? AND fk_friend_user_user_id = ?";
+
+    db.query(query,[friendUserId,myuserId],(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+
+        console.log(result);
+    })
+    
+
+}
+
+
+const acceptFriendRequest = (req,res)=>{
+
+    const {myuserId,friendUserId} = req.params
+
+    console.log("ACCEPT FRIEND");
+
+    const query = "DELETE FROM friend_requests WHERE fk_me_user_user_id = ? AND fk_friend_user_user_id = ?";
+    const query2 = "INSERT INTO friends (fk_me_users_user_id,fk_friend_users_user_id) VALUES (?,?)"
+
+    db.query(query,[friendUserId,myuserId],(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+
+       // console.log(result);
+       const query2 = "INSERT INTO friends (fk_me_users_user_id,fk_friend_users_user_id) VALUES (?,?)"
+       
+       db.query(query2,[myuserId,friendUserId],(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+
+        db.query(query2,[friendUserId, myuserId],(err,result)=>{
+            if(err){
+                console.log(err);
+            }
+    
+            console.log(result);
+    
+            })
+
+       
+
+        })
+
+
+    })
+    
+
+}
+
+module.exports = { sendFriendRequest, getFriendRequest, rejectFriendRequest,  acceptFriendRequest };

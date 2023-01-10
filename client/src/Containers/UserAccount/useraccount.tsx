@@ -34,20 +34,16 @@ function UserAccount() {
   const socket = useContext(SocketContext)
   const { username } = useParams();
   const dispatch = useDispatch();
-  const user = useSelector(
-    (state: RootState) => state.reducer.user.object
-  );
-  const singleChatroom = useSelector(
-    (state: RootState) => state.reducer.singlechatroom.object
-  );
 
+  const user = useSelector((state: RootState) => state.reducer.user.object);
+  const singleChatroom = useSelector( (state: RootState) => state.reducer.singlechatroom.object);
   const friend = useSelector((state:RootState)=> state.reducer.SearchedFriend.object)
 
  
 
   //console.log(singleChatroom);
 
-  //destructuring what is needed from chat room hooks
+  //destructuring what is needed from  hooks
   const { getChatRoomInfo, getChatrooms, myChatRooms, oneChatRoom } =
     useGetUsersChatRooms();
 
@@ -58,11 +54,12 @@ function UserAccount() {
 
   const{ getSearchedUsers, searchedUsers, friendship,  setfriendship  } = useSearchedUsers();
 
+  //State
   const [createGroup, setCreateGroup] = useState(false);
   const [query, setQuery] = useState("");
-  const [chat, setChat] = useState<boolean | null>(false)
-  const [sendRequest, setsendRequest] = useState<boolean | null>(null)
-  const[chatroomInfo, setChatRoomInfo] = useState(false)
+  const [chat, setChat] = useState<boolean | null>(false);
+  const [sendRequest, setsendRequest] = useState<boolean | null>(null);
+  const[chatroomInfo, setChatRoomInfo] = useState(false);
 
   
 
@@ -162,11 +159,14 @@ function UserAccount() {
    if(friendship){
     //setChatRoomInfo(false)
     MidSectionComponent = <PrivateMessage/>
+
    }else if(friendship === false){
 
     MidSectionComponent = <SendFriendRequest  name={friend.user_name} 
                                   friendSId={friend.user_id}  myUserId={user.userid} />
    }else{
+    //At this point friendship has been set to null to remove those 
+    //components out of view
     if(sendRequest === false){
       MidSectionComponent =  <SendRequest/>
     }else{
