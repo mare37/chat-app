@@ -4,19 +4,18 @@ const db = require("../config/database");
 const cors = require("cors");
 var cookieParser = require('cookie-parser')
 
-const { findIfFriend  } = require("../controllers/Friends");
+const {getOnePrivateChatroom } = require("../controllers/PrivateChatrooms");
 const validate = require("../middleware/auth");
 
 router.use(cors({ origin: true, credentials: true }));
 router.use(express.json());
-router.use(cookieParser());
-
-
-router.get("/:myuserId/:friendUserId", findIfFriend);
+router.use(cookieParser())
 
 
 
+router.get("/:myuserId/:friendUserId", getOnePrivateChatroom);
 
+//
 
+module.exports =router;
 
-module.exports = router;

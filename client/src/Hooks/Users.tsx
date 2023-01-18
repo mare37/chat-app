@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { setUser } from "../usernameSlice";
 import { setSearchedFriend } from "../Redux/Friends/FriendSlice";
+import { setPrivateChatroom } from "../Redux/PrivateChatroom/PrivateChatroomSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import { Login, getLoginStatus , getAllusers} from "../Services/Users/Users";
-import { findFriend } from "../Services/Friends/Friends";
+import { findIfFriend } from "../Services/Friends/Friends";
+import { getOnePrivateChatroom } from "../Services/PrivateChatrooms/PrivateChatrooms";
 
 axios.defaults.withCredentials = true;
 
@@ -107,6 +109,33 @@ const useGetLoginStatus = () =>{
     const connectWithFriend = async (myUserId:number, friendsUserId:number, friendsUserName:string)=>{
 
       if(myUserId !== friendsUserId){
+
+        const privateChatroomData = await getOnePrivateChatroom(myUserId,friendsUserId);
+
+        console.log(privateChatroomData);
+        
+
+      //  console.log(privateChatroomData);
+
+     
+
+
+      if( privateChatroomData.length  > 0){
+        console.log(privateChatroomData);
+
+
+        const privateChatroom = {
+          private_chatroom_id:  privateChatroomData[0].private_chatrooms_id
+        }
+      ///  console.log(privateChatroom);
+        
+        
+        dispatch(setPrivateChatroom(privateChatroom));
+  
+      
+      }
+
+      
         
         const friend ={
           user_id:friendsUserId,
@@ -115,7 +144,7 @@ const useGetLoginStatus = () =>{
          dispatch(setSearchedFriend(friend));
   
       //  find out if they are friends
-          const friendshipStatus = await  findFriend(myUserId,friendsUserId);
+          const friendshipStatus = await  findIfFriend(myUserId,friendsUserId);
   
           if( typeof friendshipStatus !== "undefined"){
             setfriendship(friendshipStatus)

@@ -9,6 +9,7 @@ import chatroomIdReducer from "./Redux/Chatroom_Requests/ChatRoomIdSlice"
 import sendRequestReducer from "./Redux/Chatroom_Requests/SetRequestSlice"
 import UserRequestsReducer from "./Redux/Chatroom_Requests/UserRequestsArraySlice"
 import SearchedFriendReducer from "./Redux/Friends/FriendSlice";
+import PrivateChatroomReducer from "./Redux/PrivateChatroom/PrivateChatroomSlice"
 
 
 const rootReduce = combineReducers({
@@ -17,7 +18,8 @@ const rootReduce = combineReducers({
   chatroomId: chatroomIdReducer,
   sendRequest: sendRequestReducer,
   UserRequestsArray: UserRequestsReducer, 
-  SearchedFriend : SearchedFriendReducer
+  SearchedFriend : SearchedFriendReducer,
+  PrivateChatroom: PrivateChatroomReducer
 })
 
 

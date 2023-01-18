@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const findFriend = async (myId:number, friendsId:number)=>{
+const findIfFriend = async (myId:number, friendsId:number)=>{
 
     try{
         const response = await axios.get(`http://localhost:5000/api/friends/${myId}/${friendsId}`);
@@ -29,4 +29,4 @@ const findFriend = async (myId:number, friendsId:number)=>{
 
 
 
-export {findFriend}
+export {findIfFriend}

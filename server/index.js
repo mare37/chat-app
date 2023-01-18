@@ -26,6 +26,7 @@ const chatroomRequestRoute =  require("./src/routes/Chatroom-Requests")
 const messagesRoute = require("./src/routes/messages");
 const friendsRoute = require("./src/routes/Friends");
 const friendRequestRoute = require("./src/routes/FriendRequests");
+const privateChatroomRoute = require("./src/routes/PrivateChatrooms")
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -44,6 +45,7 @@ app.use("/api/chatroom_requests", chatroomRequestRoute );
 app.use("/api/messages", messagesRoute);
 app.use("/api/friends", friendsRoute);
 app.use("/api/friendrequests", friendRequestRoute);
+app.use("/api/private_chatroom", privateChatroomRoute);
 
 
 app.get("/", validate, (req, res) => {
@@ -53,8 +55,110 @@ app.get("/", validate, (req, res) => {
   res.send("HOME");
 });
 
+
+/*io.use((socket, next) => {
+  const privateChatroomID = socket.handshake.auth.privateChatroomID;
+
+  if (!privateChatroomID) {
+    return next(new Error("invalid username"));
+  }
+  socket.privateChatroomID = privateChatroomID;
+  console.log(`${privateChatroomID}  connected`);
+  next();
+});*/
+
+
+
+io.on("private connection", (socket)=>{
+  console.log(`Private User connected ${socket.id}`);
+
+  socket.on("join private room", (data, err)=>{
+    console.log(data);
+
+ })
+
+})
+
+
+
+
+
+
 io.on("connection", (socket) => {
-   console.log(`User connected ${socket.id}`);
+
+
+
+  // console.log(`User connected ${socket.id}`);
+
+
+   socket.on("Private User connected", (data)=>{
+    console.log(`Private User connected ${socket.id}`);
+
+    console.log(data)
+
+    socket.join(data.privateChatroom);
+       
+    if(data.private === "private"){
+
+   
+      
+
+
+       }
+
+   })
+
+
+   socket.on("private message", ({ content, to, me ,room}) => {
+    //console.log(content);
+  //  console.log(room);
+    const int = parseInt(to)
+ // console.log(int);
+  
+
+   // socket.join(int)
+ // io.sockets.manager.roomClients[int]
+ // console.log(socket.rooms);
+
+  socket.to(room).emit("private message", {
+    content,
+    from: me,
+  });
+
+  
+
+
+   
+  });
+
+
+
+
+
+  /* const users = [];
+   for (let [id, socket] of io.of("/").sockets) {
+     users.push({
+      privateChatroom: id,
+      privateChatroomID: socket.privateChatroomID,
+     });
+   }
+   socket.emit("users", users);*/
+
+
+   
+
+
+
+   
+
+
+
+
+
+
+
+
+
 
   socket.on("join_room", async (data, err) => {
     if (err) {

@@ -138,15 +138,27 @@ const acceptFriendRequest = (req,res)=>{
     console.log("ACCEPT FRIEND");
 
     const query = "DELETE FROM friend_requests WHERE fk_me_user_user_id = ? AND fk_friend_user_user_id = ?";
-    const query2 = "INSERT INTO friends (fk_me_users_user_id,fk_friend_users_user_id) VALUES (?,?)"
+  //  const query2 = "INSERT INTO friends (fk_me_users_user_id,fk_friend_users_user_id) VALUES (?,?)"
 
     db.query(query,[friendUserId,myuserId],(err,result)=>{
         if(err){
             console.log(err);
         }
 
+        //Creating an exclusive private chatroom for the two friends.Only they have access
+      const privateChatroomQuery = "INSERT INTO private_chatrooms (fk_member1_users_user_id,fk_member2_users_user_id) VALUES (?,?)"
+       
+      db.query(privateChatroomQuery, [myuserId,friendUserId], (err,result)=>{
+        if(err){
+          console.log(err);
+        }
+
+        console.log(result);
+      })
+
+
        // console.log(result);
-       const query2 = "INSERT INTO friends (fk_me_users_user_id,fk_friend_users_user_id) VALUES (?,?)"
+       const query2 = "INSERT INTO friends (fk_me_users_user_id,fk_friend_users_user_id) VALUES (?,?)" 
        
        db.query(query2,[myuserId,friendUserId],(err,result)=>{
         if(err){

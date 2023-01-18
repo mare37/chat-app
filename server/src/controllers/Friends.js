@@ -2,7 +2,7 @@
 const db = require("../../src/config/database");
 
 
-const  findFriend = (req,res)=>{
+const  findIfFriend = (req,res)=>{
 
     const{myuserId, friendUserId} = req.params;
     console.log( friendUserId);
@@ -25,4 +25,4 @@ const  findFriend = (req,res)=>{
 }
 
 
-module.exports = {findFriend}
+module.exports = {findIfFriend}
