@@ -112,7 +112,7 @@ const useGetLoginStatus = () =>{
 
         const privateChatroomData = await getOnePrivateChatroom(myUserId,friendsUserId);
 
-        console.log(privateChatroomData);
+   
         
 
       //  console.log(privateChatroomData);
@@ -121,7 +121,7 @@ const useGetLoginStatus = () =>{
 
 
       if( privateChatroomData.length  > 0){
-        console.log(privateChatroomData);
+       
 
 
         const privateChatroom = {

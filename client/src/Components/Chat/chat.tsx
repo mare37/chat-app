@@ -70,7 +70,7 @@ function Chat({ username, chatroom_id }: Props) {
 
   //send message
   const sendMessage = async () => {
-    console.log("sendmessage called");
+    console.log("sendmessage called")
     setMessage([""]);
 
     if (messageToBeSent.length > 0) {
@@ -108,7 +108,7 @@ function Chat({ username, chatroom_id }: Props) {
 
   useEffect(() => {
     socket.on("received_message", (data) => {
-      //  console.log(data);
+       // console.log(data);
 
       setMessage(data);
 

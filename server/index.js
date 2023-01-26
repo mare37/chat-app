@@ -8,6 +8,7 @@ const { response } = require("express");
 const validate =  require("./src/middleware/auth");
 const JoinRoom = require("./src/utils/joinroom")
 const getMessages = require("./src/utils/getmessages")
+const getPrivateMessages = require("./src/utils/getPrivateMessages")
 
 const db = require("./src/config/database")
 
@@ -27,6 +28,7 @@ const messagesRoute = require("./src/routes/messages");
 const friendsRoute = require("./src/routes/Friends");
 const friendRequestRoute = require("./src/routes/FriendRequests");
 const privateChatroomRoute = require("./src/routes/PrivateChatrooms")
+const privateMesagesRoute = require("./src/routes/PrivateMessages")
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -46,6 +48,7 @@ app.use("/api/messages", messagesRoute);
 app.use("/api/friends", friendsRoute);
 app.use("/api/friendrequests", friendRequestRoute);
 app.use("/api/private_chatroom", privateChatroomRoute);
+app.use("/api/private_messages", privateMesagesRoute)
 
 
 app.get("/", validate, (req, res) => {
@@ -69,7 +72,7 @@ app.get("/", validate, (req, res) => {
 
 
 
-io.on("private connection", (socket)=>{
+/*io.on("private connection", (socket)=>{
   console.log(`Private User connected ${socket.id}`);
 
   socket.on("join private room", (data, err)=>{
@@ -77,8 +80,7 @@ io.on("private connection", (socket)=>{
 
  })
 
-})
-
+})*/
 
 
 
@@ -109,21 +111,32 @@ io.on("connection", (socket) => {
    })
 
 
-   socket.on("private message", ({ content, to, me ,room}) => {
+   socket.on("private message", async ({ messageToBeSent, to, me ,room}) => {
     //console.log(content);
   //  console.log(room);
     const int = parseInt(to)
  // console.log(int);
+    // const response = await getPrivateMessages(room, me);
+
+   ///  console.log(response);
+
+   getPrivateMessages(room, me).then((response)=>{
+    console.log(response);
+    const data = response
+
+    socket.emit("receive private message", [data ,{  from: me,}]);
+    socket.to(room).emit("receive private message", [data,{  from: me,}]);
+   })
+
+
+      
   
 
    // socket.join(int)
  // io.sockets.manager.roomClients[int]
  // console.log(socket.rooms);
 
-  socket.to(room).emit("private message", {
-    content,
-    from: me,
-  });
+ 
 
   
 
