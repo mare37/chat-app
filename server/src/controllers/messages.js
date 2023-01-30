@@ -9,7 +9,17 @@ const postOneMessage = (req, res)=>{
      db.query(query,[message,userId,chatroomId],(err, result)=>{
         if(err) throw err;
 
-        console.log(result);
+     //   console.log(result);
+       
+        const lastUpdatedQuery = `UPDATE chatroom SET last_updated = NOW() 
+                                      WHERE chatroom_id = ?`
+       db.query(lastUpdatedQuery,[chatroomId],(err,result)=>{
+         if(err){
+            console.log(err);
+         }
+         console.log(result);
+       })
+
         res.send(result)
      })              
   

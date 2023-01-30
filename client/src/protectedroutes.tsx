@@ -11,6 +11,8 @@ function ProtectedRoutes() {
     axios
       .get("http://localhost:5000/api/logInStatus")
       .then((response) => {
+       // console.log(response);
+        
         setAuth(response.data.login);
       })
       .catch((err) => {

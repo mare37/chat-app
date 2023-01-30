@@ -10,6 +10,7 @@ import * as React from "react";
 import { Login, getLoginStatus , getAllusers} from "../Services/Users/Users";
 import { findIfFriend } from "../Services/Friends/Friends";
 import { getOnePrivateChatroom } from "../Services/PrivateChatrooms/PrivateChatrooms";
+import  {connectWithFriend} from "../Utils/Utils"
 
 axios.defaults.withCredentials = true;
 
@@ -101,16 +102,16 @@ const useGetLoginStatus = () =>{
 
 
  const  useSearchedUsers =()=>{
-  const [searchedUsers, setSearchedUsers] = useState([]);
+  const [searchedUsers, setSearchedUsers] = useState([])
   const [friendship, setfriendship] = useState<boolean | null>(null);
   const myUserId = useSelector((state: RootState) => state.reducer.user.object.userid);
    const dispatch = useDispatch()
   //function definition
-    const connectWithFriend = async (myUserId:number, friendsUserId:number, friendsUserName:string)=>{
+    const connectWithFriend = async (myUserId:number, friendsUserId:number, friendsUserName:string,friendShip:string)=>{
 
       if(myUserId !== friendsUserId){
 
-        const privateChatroomData = await getOnePrivateChatroom(myUserId,friendsUserId);
+        const privateChatroomData = await getOnePrivateChatroom(myUserId,friendsUserId)
 
    
         
@@ -144,11 +145,15 @@ const useGetLoginStatus = () =>{
          dispatch(setSearchedFriend(friend));
   
       //  find out if they are friends
-          const friendshipStatus = await  findIfFriend(myUserId,friendsUserId);
+          if(friendShip === 'mayNotBeFriends'){
+            const friendshipStatus = await  findIfFriend(myUserId,friendsUserId);
   
-          if( typeof friendshipStatus !== "undefined"){
-            setfriendship(friendshipStatus)
+            if( typeof friendshipStatus !== "undefined"){
+              setfriendship(friendshipStatus);
+            }
+
           }
+         
 
       }
 
@@ -174,7 +179,7 @@ const useGetLoginStatus = () =>{
       });
 
       let data2 = data.map((item: any, key: number) => {
-        return <p  key={key}  onClick={()=>{connectWithFriend(myUserId,item.user_id,item.user_name)}}>{item.user_name}</p>;
+        return <p  key={key}  onClick={()=>{connectWithFriend(myUserId,item.user_id,item.user_name,"mayNotBeFriends")}}>{item.user_name}</p>;
       });
       setSearchedUsers(data2)
       
@@ -198,7 +203,7 @@ const useGetLoginStatus = () =>{
 
 
 
-       return{getSearchedUsers,searchedUsers,  setSearchedUsers ,friendship,   setfriendship }
+       return{getSearchedUsers,searchedUsers,  setSearchedUsers ,friendship,   setfriendship, connectWithFriend }
  }
 
 export {useLoginUser , useGetLoginStatus,useSearchedUsers  };

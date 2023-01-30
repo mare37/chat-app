@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { getJoinedChatrooms } from "../Services/ChatroomUsers/ChatroomUsers"
+import { getChats } from "../Services/ActiveChats/ActiveChats";
 import { useState } from "react";
 import { setSingleChatroom } from "../Redux/Chatrooms/SingleChatroomSlice";
 
@@ -15,32 +16,41 @@ interface userObject{
     fk_users_users_id:number   
 }
 
+interface userObject2{
+  ID:number,
+  last_updated:string,
+  name:string,
+  room:string
+
+}
+
 
 
 const useMyChatrooms = ()=>{
     const user = useSelector((state:RootState)=> state.reducer.user.object)
     const dispatch = useDispatch();
 
-    const [joinedRooms, setJoinedRoomsData] = useState<Array<userObject>>([]);
+    const [joinedRooms, setJoinedRoomsData] = useState<Array<userObject2>>([]);
 
 
     const joinedChatrooms = async ()=>{
 
-        const response = await getJoinedChatrooms(user.userid);
+      //  const response = await getJoinedChatrooms(user.userid);
+          const response = await getChats(user.userid)
 
-      //  console.log(response);
+      // console.log(response);
 
         
             //const array = response?.data;
-            setJoinedRoomsData(response)
+           setJoinedRoomsData(response)
     }
     //console.log(joinedRoomsdata);
 
-    const joinAchatroom = (chatroomId:number)=>{
+    const joinAchatroom = (chatroomId:number,room:string)=>{
         const oneChatRoom = joinedRooms.filter((item) => {
       
       
-            if (item.chatroom_id === chatroomId) {
+            if (item.ID === chatroomId && item.room === room ) {
              // console.log(item);
               
               return true;
@@ -52,8 +62,8 @@ const useMyChatrooms = ()=>{
           });
 
           const chatroomInfo = {
-            chatroom_name: oneChatRoom[0].chatroom_name,
-            chatroom_id: oneChatRoom[0].chatroom_id,
+            chatroom_name: oneChatRoom[0].name,
+            chatroom_id: oneChatRoom[0].ID,
             chatroom_membersNo: 0,
             chatroom_requestNo: 0
           }
@@ -73,7 +83,7 @@ const useMyChatrooms = ()=>{
     
 
 
-   return {joinedChatrooms, joinedRooms,  joinAchatroom  }
+   return {joinedChatrooms, joinedRooms,  joinAchatroom ,  setJoinedRoomsData  }
 
 }
 

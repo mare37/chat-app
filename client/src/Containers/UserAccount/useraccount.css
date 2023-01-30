@@ -49,3 +49,7 @@
     align-items: center;
     width: 30%;
 }
+
+.friends{
+    display: inline-block;
+}

@@ -13,17 +13,25 @@ import SendRequest from "../../Components/SendRequest/SendRequest";
 import Welcome from "../../Components/WelcomeToChat/Welcome";
 import PrivateMessage from "../../Components/PrivateMessage/PrivateMessage";
 import SendFriendRequest from "../../Components/SendFriendRequest/SendFriendRequest";
+import ChatroomComponent from "../../Components/ChatroomComponent/ChatroomComponent";
+import FriendComponent from "../../Components/FriendComponent/FriendComponent";
 //importing chatroom hooks
 import {
   useGetUsersChatRooms,
   useGetSearchedChatRooms,
 } from "../../Hooks/Chatrooms";
 
+import { useGetFriends } from "../../Hooks/Friends";
+
 import {useSearchedUsers} from "../../Hooks/Users"
 
 import { useMyChatrooms } from "../../Hooks/ChatroomUsers";
 
 import { SocketContext } from "../../context";
+
+import { getChats } from "../../Services/ActiveChats/ActiveChats";
+
+
 
 axios.defaults.withCredentials = true;
 
@@ -45,14 +53,16 @@ function UserAccount() {
 
   //destructuring what is needed from  hooks
   const { getChatRoomInfo, getChatrooms, myChatRooms, oneChatRoom } =
-    useGetUsersChatRooms();
+    useGetUsersChatRooms()
+
+  const {getFriends,  friends  } = useGetFriends();
 
   const { joinChatRoom,     getSeachedChartRooms, searchItems, setSearchItems } =
     useGetSearchedChatRooms();
 
-  const { joinedChatrooms, joinedRooms,  joinAchatroom  }  = useMyChatrooms();
+  const { joinedChatrooms, joinedRooms,  joinAchatroom,  setJoinedRoomsData  }  = useMyChatrooms()
 
-  const{ getSearchedUsers, searchedUsers, friendship,  setfriendship  } = useSearchedUsers();
+  const{ getSearchedUsers, searchedUsers, friendship,  setfriendship, connectWithFriend } = useSearchedUsers();
 
   //State
   const [createGroup, setCreateGroup] = useState(false);
@@ -70,10 +80,20 @@ function UserAccount() {
       
     //dispatch(SetsendRequest(requestBooleanValue))
 
-    getChatrooms(user.userid)
+    getChatrooms(user.userid);
+    getFriends(user.userid);
     joinedChatrooms();
 
+
+  /*  const waitForData = async ()=>{
+           const response = await getChats(user.userid);
+    } */
+   
+
   }, []);
+
+  //console.log( myChatRooms);
+  
 
 
 
@@ -142,17 +162,60 @@ function UserAccount() {
     );
   });
 
+ // console.log(joinedRooms);
+  
+
   const joinedRoomsdata = joinedRooms.map((item, index)=>{
-    if(item.fk_admin_users_user_id !== user.userid){
-      return <p key={index} onClick={()=>{
-              joinAchatroom(item.chatroom_id)
-              setChat(true)
-              setChatRoomInfo(false)
-              setfriendship(null)
-      }}   >{item.chatroom_name}</p>
-    }
+
+        if(item.room === "public"){
+
+
+          return <ChatroomComponent  
+                      key={index}
+                      ID={item.ID}
+                      room={item.room}   
+                      chatroomName={item.name}
+                      joinAchatroom={joinAchatroom}
+                      setChat={ setChat }
+                      setChatRoomInfo={  setChatRoomInfo }
+                      setfriendship={  setfriendship  }
+
+                      />
+       
+          
+        /*  return <p key={index} onClick={()=>{
+            joinAchatroom(item.ID, item.room)
+            setChat(true)
+            setChatRoomInfo(false)
+            setfriendship(null)
+          }}>{item.name}</p>*/
+
+        }else{
+         // return <p key={index}>{item.name}</p>
+
+         return <FriendComponent key={index}
+                                 myUserId={user.userid}
+                                 friendsUserName={item.name}
+                                 friendsId={item.ID}
+                                 setfriendship={setfriendship}
+                                 connectWithFriend={connectWithFriend}
+
+              />
+        }
+   
+    
+    
    
   })
+
+
+  let friendsData = friends.map((item,index)=>{
+  
+    
+    return <p key={index}>{item.user_name}</p>
+  })
+
+ 
 
     let MidSectionComponent;
 
@@ -184,9 +247,11 @@ function UserAccount() {
 
    
 
+  
 
 
    
+
 
 
 
@@ -236,16 +301,21 @@ function UserAccount() {
           {searchedUsers}
         </div>
       </div>
+      <div className="friends"  >
+        <p>My Connects</p>
+      </div>
+
 
       <div className="useraccount-body">
         <section className="mygroups-section">
-          <h3>Chatrooms you manage</h3>
+        <h3>ACTIVE CHATS</h3>
 
-          {myChatRoomsData}
+          {/*myChatRoomsData*/}
 
-          <h3>Chatrooms you've joined</h3>
 
           {joinedRoomsdata}
+          {/*friendsData*/}
+      
         </section>
         <section className="chat-section">
 

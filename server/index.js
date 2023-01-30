@@ -29,6 +29,7 @@ const friendsRoute = require("./src/routes/Friends");
 const friendRequestRoute = require("./src/routes/FriendRequests");
 const privateChatroomRoute = require("./src/routes/PrivateChatrooms")
 const privateMesagesRoute = require("./src/routes/PrivateMessages")
+const ActiveChats = require("./src/routes/ActiveChats");
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -48,7 +49,8 @@ app.use("/api/messages", messagesRoute);
 app.use("/api/friends", friendsRoute);
 app.use("/api/friendrequests", friendRequestRoute);
 app.use("/api/private_chatroom", privateChatroomRoute);
-app.use("/api/private_messages", privateMesagesRoute)
+app.use("/api/private_messages", privateMesagesRoute);
+app.use("/api/activechats", ActiveChats);
 
 
 app.get("/", validate, (req, res) => {

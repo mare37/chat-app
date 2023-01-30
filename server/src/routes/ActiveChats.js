@@ -4,20 +4,16 @@ const db = require("../config/database");
 const cors = require("cors");
 var cookieParser = require('cookie-parser')
 
-const { findIfFriend, getAllMyFriends   } = require("../controllers/Friends");
+const { getChats  } = require("../controllers/ActiveChats");
 const validate = require("../middleware/auth");
 
 router.use(cors({ origin: true, credentials: true }));
 router.use(express.json());
-router.use(cookieParser());
+router.use(cookieParser())
 
 
-router.get("/:myuserId/:friendUserId", findIfFriend);
-router.get("/:myuserId", getAllMyFriends  );
+router.get("/:myUserId", getChats );
 
 
-
-
-
-
-module.exports = router;
+module.exports = router
+//

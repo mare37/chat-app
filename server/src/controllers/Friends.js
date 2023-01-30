@@ -25,4 +25,25 @@ const  findIfFriend = (req,res)=>{
 }
 
 
-module.exports = {findIfFriend}
+const  getAllMyFriends  =(req,res)=>{
+          
+    const {myuserId} = req.params
+
+    const query = `SELECT * FROM friends JOIN users ON 
+                   fk_friend_users_user_id = user_id WHERE fk_me_users_user_id = ?`
+    
+    db.query(query,[myuserId],(err,result)=>{
+
+        if(err){
+            console.log(err);
+        }
+
+      //  console.log(result);
+      res.send(result)
+       
+    })               
+
+}
+
+
+module.exports = {findIfFriend, getAllMyFriends   }

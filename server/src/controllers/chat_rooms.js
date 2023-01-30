@@ -40,7 +40,7 @@ const createChatRoom = (req, res) => {
 
 const getAllChatRooms =(req,res)=>{
 
-    const user_id = req.query.userId;
+    const user_id = req.query.userId
 
     if(user_id !== undefined){
         const query = "SELECT * FROM chatroom WHERE fk_admin_users_user_id = (?)"

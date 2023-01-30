@@ -256,7 +256,7 @@ function PrivateMessage(){
               setmessageToBeSent(e.target.value);
             }}
           />
-          <button  onClick={()=>{onMessage()}}>Send</button>
+          <button  onClick={onMessage}>Send</button>
         </div>
       </div>
     )

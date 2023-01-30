@@ -14,6 +14,15 @@ const postPrivateMessage = (req, res) => {
     if(err){
         console.log(err);
     }
+
+    const lastUpdatedQuery = `UPDATE friends SET last_updated = NOW() 
+    WHERE fk_me_users_user_id = ? AND fk_friend_users_user_id = ?`
+      db.query(lastUpdatedQuery,[ myUserId, friendsUserId],(err,result)=>{
+        if(err){
+            console.log(err);
+          }
+          console.log(result);
+         })
       
     res.send("ONE PRIVATE POST ADDED")
    // console.log(result);
